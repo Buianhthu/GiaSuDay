@@ -6,14 +6,13 @@
   // Connect to database
   $db->connect();
 
-  $item_page = !empty($_GET['per_page'])?$_GET['per_page']:3;
-  $current_page = !empty($_GET['page'])?$_GET['page']:1;
-  $offset = ($current_page - 1) * $item_page;
-  $result = mysqli_query($conn, "SELECT * FROM TimGiaSu INNER JOIN ThanhVien WHERE TimGiaSu.SDT_TV = ThanhVien.SDT_TV LIMIT ".$item_page." OFFSET ".$offset."");
-  $sum_item = mysqli_query($conn, "SELECT * FROM TimGiaSu INNER JOIN ThanhVien WHERE TimGiaSu.SDT_TV = ThanhVien.SDT_TV");
-  $sum_item = $sum_item -> num_rows;
-  $totalpage = ceil ($sum_item/$item_page);
-
+  $item_page2 = !empty($_GET['per_page2'])?$_GET['per_page2']:3;
+  $current_page2 = !empty($_GET['page2'])?$_GET['page2']:1;
+  $offset2 = ($current_page2 - 1) * $item_page2;
+  $result = mysqli_query($conn, "SELECT * FROM TimGiaSu INNER JOIN ThanhVien WHERE TimGiaSu.SDT_TV = ThanhVien.SDT_TV LIMIT ".$item_page2." OFFSET ".$offset2."");
+  $sum_item2 = mysqli_query($conn, "SELECT * FROM TimGiaSu INNER JOIN ThanhVien WHERE TimGiaSu.SDT_TV = ThanhVien.SDT_TV");
+  $sum_item2 = $sum_item2 -> num_rows;
+  $totalpage2 = ceil ($sum_item2/$item_page2);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +38,7 @@
 </head>
 <body>
 
- <section class="page-section" id="services">
+ <section class="page-section" id="baidang">
     <div class="container">
       <div class="text-center">
         <h2 class="section-heading text-uppercase">Tìm Gia Sư<i class="fas fa-user-graduate" style="margin-left:10px"></i></h2>
@@ -48,10 +47,10 @@
 
       <div class="row text-center">
             <?php
-              if($result->num_rows > 0 || $result2->num_rows > 0)
+              if($result->num_rows > 0)
               {
                 foreach ($result as $dt){
-                  if ($dt['TinhTrang'] == -1)
+                  if ($dt['TinhTrang'] == -1 && $dt['KiemDuyet'] == 1)
                   {
                         echo "<div class='col-md-4'>";
                         echo "<ul style='list-style:none'>";
@@ -76,7 +75,10 @@
                         echo "<li>";
                         echo "<p class='text-muted'>"."Học Phí: ".$dt['HocPhi']."</p>";
                         echo "</li>";
-                        echo "<li><a href='./controllers/update_confirm_post.php?id=".$dt['Id']."'style='padding:.2rem;background:#fed136;text-decoration:none;color:white'>Nhận lớp ngay</a></li>";
+                        echo "<li>";
+                        echo "<a href='views/info_course_gs.php?id=".$dt['Id']."' class='btn btn-danger mt-5'>Xem chi tiết</a>";
+                        echo "</li>";
+                        echo "<li><a id='confirm' href='./controllers/update_confirm_post.php?id=".$dt['Id']."'>Nhận lớp ngay</a></li>";
                         echo "</ul>";
                         echo "</div>";
                     }    
@@ -106,52 +108,50 @@
                         echo "<li>";
                         echo "<p class='text-muted'>"."Học Phí: ".$dt['HocPhi']."</p>";
                         echo "</li>";
-                        echo "<li><a id='myBtn' href='./controllers/update_confirm_post.php?id=".$dt['Id']."'style='padding:.2rem;background:#fed136;text-decoration:none;color:white'>Chờ xác nhận</a></li>";
+                        echo "<li><a id='myBtn' href='./controllers/update_confirm_post.php?id=".$dt['Id']."'style='pointer-events: none'>Chờ xác nhận</a></li>";
                         echo "</ul>";
                         echo "</div>";
-                    }
-                        
+                    }     
              }
           }    
         ?>
-          <!-- <script>
+
+          <script>
             $(document).ready(function(){
-              $("a").click(function(){
+              $("#confirm").click(function(){
                 alert("Cảm ơn bạn đã nhận lớp. Mời bạn xác nhận lại lần nữa");
-                $(this).css('background-color', 'red');
-                $(this).prop('disabled', true);
               });
             });
-          </script> -->
+          </script>
     </div>
               <div class="pagination" style="margin:0 auto">
                 <?php
-                  if ($current_page > 1) {
-                    $pre_page = $current_page - 1;
-                  ?>
-                    <a class="current-page" href="?per_page<?=$item_page?>&page=<?=$pre_page?>&id=#services">PRE</a>
+                  if ($current_page2 > 1) {
+                    $pre_page2 = $current_page2 - 1;
+                ?>
+                  <a class="current-page" href="?per_page1<?=$item_page1?>&page1=<?=$pre_page1?>&id=#baidang">PRE</a>
+                <?php } ?>
+                  <?php for ($num=1; $num <= $totalpage2; $num++) { ?>
+                  <?php if ($num != $current_page2) { ?>
+                  <?php if ($num > $current_page2 - 3 && $num < $current_page2 + 3) { ?>
+                  <a class="current-page" href="?per_page2=<?=$item_page2?>&page2=<?=$num?>&id=#baidang"><?=$num?></a>
+                <?php } ?>
+                <?php } else { ?>
+                  <strong class="current-page"><?=$num?></strong>
+                <?php } ?>
                   <?php } ?>
-                    <?php for ($num=1; $num <= $totalpage; $num++) { ?>
-                    <?php if ($num != $current_page) { ?>
-                    <?php if ($num > $current_page - 3 && $num < $current_page + 3) { ?>
-                    <a class="current-page" href="?per_page=<?=$item_page?>&page=<?=$num?>&id=#services"><?=$num?></a>
-                  <?php } ?>
-                  <?php } else { ?>
-                    <strong class="current-page"><?=$num?></strong>
-                  <?php } ?>
-                    <?php } ?>
-                  <?php
-                    if ($current_page < $totalpage - 1) {
-                  $next_page = $current_page + 1; ?>
-                    <a class="current-page" href="?per_page<?=$item_page?>&page=<?=$next_page?>&id=#services">NEXT</a>
-                  <?php } ?>
-              </div> 
+                <?php
+                  if ($current_page2 < $totalpage2 - 1) {
+                $next_page2 = $current_page2 + 1; ?>
+                  <a class="current-page" href="?per_page1<?=$item_page1?>&page1=<?=$next_page1?>&id=#baidang">NEXT</a>
+                <?php } ?>
+              </div>
+
+
       </div>
     </div> 
   </br>
-   <div id="link">
-      <a id='ds' href='./danhsachbaidang.php'>Xem danh sách<i class="fas fa-list-alt" style="margin-left:10px"></i></a>
-    </div>
+      
 
 
   </section>

@@ -16,24 +16,14 @@
 	$tv2 = $tv1->fetch_array(MYSQLI_ASSOC);
 	$t = $tv2['SDT_TV'];
 
-	$sql = "UPDATE review SET KIEMDUYET = '0' WHERE Id = '$id'";
-	$sql2 = "INSERT INTO thongbao(NguoiGui, NguoiNhan, Loai, NoiDung, NgayThongBao, Seen) VALUES('admin','$t',1,'Tài khoản chưa được phê duyệt','$today',0);";
+	$sql = "UPDATE review SET KiemDuyet = '0' WHERE Id = '$id';";
+	$nd = 'Bài review có Id: '. $id  .' của bạn đã bị hủy phê duyệt bởi Admin vì một số nội dung không phù hợp.';
+	$sql .= "INSERT INTO thongbao(NguoiGui, NguoiNhan, Loai, NoiDung, NgayThongBao, Seen) VALUES('admin','$t',1,'$nd','$today',0);";
 	
-	$check = $db->executeNonQuery($sql);
-	$check2 = $db->executeNonQuery($sql2);
+	$check = $db->executeNonMultiQuery($sql);
 	
-	if($check == true && $check2 == true) {
-		echo '<div class="alert alert-success alert-dismissible">';
-		echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
-		echo '<strong>Success!</strong> hủy duyệt thành công. Vui lòng F5 để xem kết quả';
-		echo '</div>';
-	}
-	else{
-		echo '<div class="alert alert-danger alert-dismissible">';
-		echo '<button type="button" class="close" data-dismiss="alert">&times;</button>';
-		echo '<strong>Fail!</strong> hủy duyệt thất bại.';
-		echo '</div>';
-	}
+	if($check == true) echo '1';
+	else echo '0';
 
 	$db->close();
 ?>

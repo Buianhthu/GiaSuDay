@@ -41,19 +41,19 @@
   <!-- VIEWS -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="index.php"><img src="assets/img/navbar-logo.svg" /></a>
+      <a class="navbar-brand js-scroll-trigger" href="index.php">GSD<i class="fas fa-chalkboard-teacher" style="font-size: 40px; margin-left:5px"></i></a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu<i class="fas fa-bars ml-1"></i>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav text-uppercase ml-auto mr-5">
+        <ul class="navbar-nav text-uppercase ml-auto">
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#portfolio">GIA SƯ</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#services">TÌM GIA SƯ</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#about">ĐÁNH GIÁ</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#contact">LIÊN HỆ</a></li>
         </ul>
+        <?php require_once('views/display_login.php') ?>
       </div>
-      <?php require_once('views/display_login.php') ?>
     </div>
   </nav>
   <!-- END VIEWS -->
@@ -61,17 +61,18 @@
   <br>
   <br>
   <br>
-  <div class="container">
+  <div class="container mb-5">
     <div class="row">
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <?php
           require_once('views/display_avatar.php');
           require_once('views/display_info_gs.php');
         ?>
       </div>
-      <div class="col-lg-9">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-7">
         <div class="row">
-          <div class="col-12">
+          <div class="col">
             <h3 style="text-align:center">Ảnh chứng chỉ</h3>
             <?php require_once('views/display_chungchi_gs.php'); ?>
           </div>
@@ -98,7 +99,7 @@
         <!-- Modal body -->
         <div class="modal-body">
           <div class="form-inline">
-            <textarea rows="5" cols="150" id="mota" name="mota" maxlength="200" placeholder="Mô tả về kinh nghiệm, ưu điểm của bản thân"></textarea>
+            <textarea rows="5" cols="150" id="mota" name="mota" maxlength="299" placeholder="Mô tả về kinh nghiệm, ưu điểm của bản thân. Đây là nội dung để thu hút học viên đăng ký."></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -168,7 +169,7 @@
     </div>
   </div>
   
-  <div class="modal fade" id="updateAvatar">
+  <div class="modal fade" id="uploadAvatar">
     <div class="modal-dialog">
       <div class="modal-content">
         <!-- Modal Header -->
@@ -187,7 +188,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="updateChungchi">
+  <div class="modal fade" id="uploadChungchi">
     <div class="modal-dialog">
       <div class="modal-content">
         <!-- Modal Header -->
@@ -240,12 +241,12 @@
             </div>
             <select class="form-control" id="hocvi" name="hocvi">
               <option value="">-- Chọn học vị --</option>
-              <option>Người lành nghề</option>
-              <option>Trung Cấp</option>
-              <option>Cao Đẳng</option>
-              <option>Đại Học</option>
-              <option>Thạc Sĩ</option>
-              <option>Tiến Sĩ</option>
+              <option value="Người lành nghề">Người lành nghề</option>
+              <option value="Trung Cấp">Trung Cấp</option>
+              <option value="Cao Đẳng">Cao Đẳng</option>
+              <option value="Đại Học">Đại Học</option>
+              <option value="Thạc Sĩ">Thạc Sĩ</option>
+              <option value="Tiến Sĩ">Tiến Sĩ</option>
             </select>
           </div>
           <div class="input-group mb-3">

@@ -31,8 +31,11 @@
 
       echo '<a href="thongtin_tv.php"><i class="fas fa-user fa-sm fa-fw mr-2"></i>Thông tin cá nhân</a>';
       echo '<a href="thongbao.php"><i class="fas fa-bell fa-sm fa-fw mr-2"></i>Thông báo</a>';
+      echo '<a href="quanlybaidang.php"><i class="fas fa-paste fa-sm fa-fw mr-2"></i>Bài đăng của tôi</a>';
+      echo '<a href="quanlyreview.php"><i class="fas fa-clipboard-list fa-sm fa-fw mr-2"></i>Review của tôi</a>';
+
       echo '<a href="timgiasu.php"><i class="fas fa-user-plus fa-sm fa-fw mr-2"></i>Tìm gia sư</a>';
-      echo '<a href="dangreview.php"><i class="fas fa-paste fa-sm fa-fw mr-2"></i>Đăng review</a>';
+      echo '<a href="dangreview.php"><i class="fas fa-file-medical fa-sm fa-fw mr-2"></i></i>Đăng review</a>';
       echo '<button onclick="logout()"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2"></i>Đăng xuất</button>';
 
       echo '</div>';

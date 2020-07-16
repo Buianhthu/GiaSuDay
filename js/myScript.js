@@ -58,9 +58,19 @@ function validateNumber(evt) {
   }
 }
 
-function validateEmail(email) {
+function isEmail(email) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
+}
+
+function isURL(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+  '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return pattern.test(str);
 }
 
 function insertTV(){
@@ -81,7 +91,7 @@ function insertTV(){
     alert('Không được bỏ trống các trường !');
     return;
   }
-  else if(validateEmail(email) == false){
+  else if(isEmail(email) == false){
     alert('Email không hợp lệ !');
     return;
   }
@@ -122,7 +132,7 @@ function insertGS(){
     alert('Không được bỏ trống các trường !');
     return;
   }
-  else if(validateEmail(email) == false){
+  else if(isEmail(email) == false){
     alert('Email không hợp lệ !');
     return;
   }
@@ -158,7 +168,7 @@ function insertMonDay(sdt) {
     if (this.readyState == 4 && this.status == 200) {
       var t = this.responseText;
       if(t == -1) alert("Đã đăng ký môn này, vui lòng chọn môn khác.");
-      else if(t == 0) alert("Gặp lỗi trong quá trình xử lý, vui lòng nhập lại.");
+      else if(t == 0) alert("ERROR: Thêm thất bại !");
       else location.reload();
     }
   };
@@ -186,7 +196,7 @@ function insertTimGiaSu(sdt) {
       if (this.readyState == 4 && this.status == 200)
         document.getElementById("notification").innerHTML = this.responseText;
     };
-    var str = "controllers/insert_timgiasu_tv.php?sdt=" + sdt + "&tenmonhoc=" + chitietmonhoc + "&noidung=" + noidung + "&thoigianhoc=" + thoigianhoc + "&hocphi=" + hocphi;
+    var str = "controllers/insert_timgiasu_tv.php?sdt=" + sdt + "&tenmonhoc=" + monmoi + "&noidung=" + noidung + "&thoigianhoc=" + thoigianhoc + "&hocphi=" + hocphi;
     xhttp.open("GET", str, true);
     xhttp.send();
   }
@@ -201,7 +211,7 @@ function insertTimGiaSu(sdt) {
       if (this.readyState == 4 && this.status == 200)
         document.getElementById("notification").innerHTML = this.responseText;
     };
-    var str = "controllers/insert_timgiasu_tv.php?sdt=" + sdt + "&tenmonhoc=" + monmoi + "&noidung=" + noidung + "&thoigianhoc=" + thoigianhoc + "&hocphi=" + hocphi;
+    var str = "controllers/insert_timgiasu_tv.php?sdt=" + sdt + "&tenmonhoc=" + chitietmonhoc + "&noidung=" + noidung + "&thoigianhoc=" + thoigianhoc + "&hocphi=" + hocphi;
     xhttp.open("GET", str, true);
     xhttp.send();
   }
@@ -211,10 +221,10 @@ function insertTimGiaSu(sdt) {
 function insertReview(sdt) {
   var noidung = document.getElementById("noidung").value;
   if(noidung.length == 0){
-    alert('Vui lòng không để trống các trường');
+    alert('Vui lòng không để trống');
     return;
   }
-  else if(noidung.length > 300){
+  else if(noidung.length > 299){
     alert('Nội dung quá dài');
     return;
   }
@@ -232,7 +242,8 @@ function insertReview(sdt) {
 
 function updateMoTa(sdt) {
   var mota = document.getElementById("mota").value;
-  if(mota.length == 0 || mota.length > 245){
+  if(mota.length == 0 || mota.length > 299){
+    alert('Độ dài trường nhập không hợp lệ !');
     return;
   }
   else{
@@ -242,9 +253,9 @@ function updateMoTa(sdt) {
       if (this.readyState == 4 && this.status == 200) {
         var t = this.responseText;
         if(t == 0){
-          alert("Gặp lỗi trong quá trình xử lý, vui lòng nhập lại.");
+          alert("ERROR: Cập nhật thất bại !");
         }
-        else{ location.reload();}
+        else location.reload();
       }
     };
     xhttp.open("GET", "controllers/update_mota_gs.php?mota=" + mota + "&sdt=" + sdt, true);
@@ -257,7 +268,7 @@ function updateEmail(sdt) {
   if(email.length == 0){
     return;
   }
-  else if(validateEmail(email) == false){
+  else if(isEmail(email) == false){
     alert("Email không hợp lệ !");
     return;
   }
@@ -268,8 +279,8 @@ function updateEmail(sdt) {
       if (this.readyState == 4 && this.status == 200) {
         var t = this.responseText;
         if(t == -1) alert("Email đã tồn tại.");
-        else if(t == 0) alert("Gặp lỗi trong quá trình xử lý, vui lòng nhập lại.");
-        else{ location.reload();}
+        else if(t == 0) alert("ERROR: Cập nhật thất bại !");
+        else location.reload();
       }
     };
     xhttp.open("GET", "controllers/update_email.php?email=" + email + "&sdt=" + sdt, true);
@@ -282,13 +293,17 @@ function updateFB(sdt) {
   if(fb.length == 0){
     return;
   }
+  else if(isURL(fb) == false){
+    alert("Đường link không hợp lệ !");
+    return;
+  }
   else{
     var xhttp;
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         var t = this.responseText;
-        if(t == 0) alert("Gặp lỗi trong quá trình xử lý, vui lòng nhập lại.");
+        if(t == 0) alert("ERROR: Cập nhật thất bại !");
         else{ location.reload();}
       }
     };
@@ -311,7 +326,7 @@ function updateThoiGianDay(sdt) {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       var t = this.responseText;
-      if(t == 0) alert("Gặp lỗi trong quá trình xử lý, vui lòng nhập lại.");
+      if(t == 0) alert("ERROR: Cập nhật thất bại !");
       else{ location.reload();}
     }
   };
@@ -330,9 +345,7 @@ function updateWorkflow(sdt) {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       var t = this.responseText;
-      if(t == 0){
-        alert("Gặp lỗi trong quá trình xử lý, vui lòng nhập lại.");
-      }
+      if(t == 0) alert("ERROR: Cập nhật thất bại !");
       else{ location.reload();}
     }
   };

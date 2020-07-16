@@ -18,40 +18,36 @@
 
     $user_name = $_SESSION ['username'];
 
-    if ($_SESSION['level'] == 1 || $_SESSION['level'] == 3)
+    if ($_SESSION['level'] == 2)
     {
         echo "<div class='container'>";
         echo "<div class='alert alert-danger'>";
-        echo "<strong>Xin lỗi bạn không phải là gia sư nên không thể nhận lớp!</strong>";
+        echo "<strong>Bạn đã là gia sư nên không thực hiện được chức năng này!</strong>";
         echo "</div>";
         echo "</div>";
     }
     else {
             if(isset($_GET['id'])){
-            $id = $_GET['id'];
+            $sdt_gs = $_GET['id'];
             }
-            //Update Status Từ -1 -> 0.
-            $update = "UPDATE TimGiaSu SET TinhTrang = '0' WHERE Id = $id";
 
-            //Thông báo cho TV
-            $tv = "SELECT SDT_TV FROM timgiasu WHERE Id = $id";
+            //Thông báo cho GS
+            $tv = "SELECT SDT_GS FROM giasu WHERE SDT_GS = $sdt_gs";
             $result = $conn->query($tv);
-            $nd = "Gia sư đã nhận bài tìm gia sư của bạn. Bạn hãy xác nhận.";
+            $nd = "Bạn nhận được lời mời dạy học. Mời bạn xác nhận.";
             date_default_timezone_set('Asia/Ho_Chi_Minh');
             $today = date("Y-m-d");
             foreach ($result as $dt) {
-                $insert = "INSERT INTO ThongBao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('".$user_name."', '".$dt['SDT_TV']."' ,'-1', '".$nd."','".$today."', '0')";
+                $insert = "INSERT INTO ThongBao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('".$user_name."', '".$dt['SDT_GS']."' ,'-1', '".$nd."','".$today."', '0')";
             }
-            $check = $db->executeNonQuery($update);
-            $check2 = $db->executeNonQuery($insert);
+            $check = $db->executeNonQuery($insert);
 
             if($check == true) {
                 echo "<div class='container'>";
                 echo "<div class='alert alert-success'>";
-                echo "<strong>Bạn đã nhận lớp thành công!</strong>";
+                echo "<strong>Bạn đã chọn gia sư thành công! Chờ xác nhận nhé !!!</strong>";
                 echo "</div>";
                 echo "</div>";
-                // require_once ('../views/info_course_gs.php');
             }
             else{
                 echo "<div class='container'>";
@@ -64,8 +60,5 @@
             
         }
 
-
-    $db->close();
-
-    
+    $db->close();   
 ?>

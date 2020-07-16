@@ -26,6 +26,14 @@ class DataAccessHelper {
 		}
 	}
 
+	public function executeNonMultiQuery($sql){
+		if ($GLOBALS['conn']->multi_query($sql) === TRUE) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public function executeQuery($sql){
 		$result = $GLOBALS['conn']->query($sql);
 		return $result;

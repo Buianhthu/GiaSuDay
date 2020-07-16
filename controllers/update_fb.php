@@ -1,5 +1,7 @@
 <?php
 	session_start();
+
+	require_once('../models/myFunction.php');
 	require_once('../models/data_access_helper.php');
 
 	// Create an instance of data access helper
@@ -8,14 +10,27 @@
 	// Connect to database
 	$db->connect();
 
-	if(isset($_GET["sdt"]) && isset($_GET["fb"])){
-		$sdt = $_GET["sdt"];
-		$fb = $_GET["fb"];
+	// Biến thao tác
+	$sdt = $fb = "";
+	$updateOK = true;
 
-		$sql = "UPDATE user SET LinkFB = '". $fb ."' WHERE SDT = '". $sdt . "';";
-		$check = $db->executeNonQuery($sql);
+	if ($_SERVER["REQUEST_METHOD"] == "GET") {
+		if(empty($_GET["sdt"]) || empty($_GET["fb"]))
+			$updateOK = false;
+		else{
+			$sdt = test_input($_GET["sdt"]);
+			$fb = test_input($_GET["fb"]);
+		}
 
-		if($check == true) echo "1";
+		if( !filter_var($fb, FILTER_VALIDATE_URL) )
+			$updateOK = false;
+
+		if($updateOK == true){
+			$sql = "UPDATE user SET LinkFB = '$fb' WHERE SDT = '$sdt';";
+
+			if($db->executeNonQuery($sql)) echo "1";
+			else echo "0";
+		}
 		else echo "0";
 	}
 

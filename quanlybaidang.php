@@ -9,7 +9,7 @@
   }
   $_SESSION['LAST_ACTIVITY'] = $time;
 
-  if( !isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 3){
+  if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 3){
     header("location:index.php");
   }
 ?>
@@ -18,7 +18,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Đăng bài review</title>
+  <title>Quản lý dạy học</title>
   <!-- Icon trang web -->
   <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
   <!-- BootStrap -->
@@ -29,22 +29,26 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+  <!-- Jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Core theme CSS (includes Bootstrap)-->
   <link href="css/styles.css" rel="stylesheet"/>
   <link href="css/override.css" rel="stylesheet" />
 </head>
 <body id="page-top">
-
   <!-- VIEWS -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="index.php">GSD<i class="fas fa-chalkboard-teacher" style="font-size: 40px; margin-left:5px"></i></a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu<i class="fas fa-bars ml-1"></i></button>
+      <a class="navbar-brand js-scroll-trigger" href="index.php">GSD<i class="fas fa-chalkboard-teacher" style="font-size: 40px; margin-left:5px"></i></a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu<i class="fas fa-bars ml-1"></i>
+      </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav text-uppercase ml-auto">
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#portfolio">GIA SƯ</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#timgiasu">TÌM GIA SƯ</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#review">ĐÁNH GIÁ</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#lienhe">LIÊN HỆ</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#services">TÌM GIA SƯ</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#about">ĐÁNH GIÁ</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="index.php#contact">LIÊN HỆ</a></li>
         </ul>
         <?php require_once('views/display_login.php'); ?>
       </div>
@@ -54,24 +58,34 @@
   <br>
   <br>
   <br>
-  <br>
   <div class="container">
-    <div id="notification"></div>
-    <div class="mb-4" style="text-align:center"><h4>ĐĂNG BÀI REVIEW</h4></div>
-    <!-- FORM INSERT -->
-    <div class="form-group">
-      <label class="ml-2" for="noidung"><strong>Nội dung :</strong></label>
-      <textarea class="form-control" rows="12" width="100%" id="noidung" placeholder="Trải nghiệm của bạn về dịch vụ website đã cung cấp,..."></textarea>
+    <h4 class="mt-3" style="text-align:center">Bài đăng của bạn</h4>
+    <div class="row">
+      <div class="col">
+        <table class="table table-hover table-responsive table-striped mt-2" style="text-align:center">
+          <thead class="thead-dark" >
+            <tr>
+              <th width="5%">Id</th>
+              <th width="30%">Tên Môn Học</th>
+              <th width="10%">Nội dung</th>
+              <th width="25%">Thời gian học</th>
+              <th width="10%">Học phí</th>
+              <th width="10%">Ngày đăng</th>
+              <th width="5%">Tình trạng</th>
+              <th width="5%">Kiểm duyệt</th>
+            </tr>
+          </thead>
+          <tbody id="content">
+            <?php require_once('views/display_baidangtimgiasu_tv.php') ?>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="form-group" style="text-align:center">
-      <?php 
-        echo '<button class="btn btn-danger" type="submit" onclick="insertReview(';
-        echo "'" . $_SESSION['username'] . "'"; 
-        echo ')">Đăng review</button>';
-      ?>
-    </div>
-    <!-- END FORM-->
   </div>
+
+  <!-- MODAL LIST -->
+    <?php require_once('views/display_modal_timgiasu.php') ?>
+  <!-- END MODAL LIST -->
 
   <!-- My JavaScript -->
   <script src="js/myScript.js"></script>

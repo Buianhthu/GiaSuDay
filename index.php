@@ -15,8 +15,6 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
   <title>Gia Sư Đây</title>
   <!-- Icon trang web -->
   <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
@@ -35,7 +33,7 @@
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="assets/img/navbar-logo.svg"/></a>
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">GSD<i class="fas fa-chalkboard-teacher" style="font-size: 40px; margin-left:5px"></i></a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu<i class="fas fa-bars ml-1"></i>
       </button>
@@ -61,13 +59,13 @@
   </header>
 
   <!-- Danh sách gia sư -->
-  <?php require_once "views/giasu.php"; ?>
+  <?php require_once ("views/giasu.php"); ?>
 
   <!-- Danh sách bài đăng tìm gia sư -->
-  <?php require_once "views/baidang.php"; ?>
+  <?php require_once ("views/baidang.php"); ?>
 
   <!-- Danh sách review -->
-  <?php require_once "views/review.php"; ?>
+  <?php require_once ("views/review.php"); ?>
 
   
   <!-- Liên hệ, Email Marketing -->
@@ -75,7 +73,7 @@
     <div class="container">
       <div class="text-center">
         <h2 class="section-heading text-uppercase">Contact Us</h2>
-        <h3 class="section-subheading text-muted"></h3>
+        <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
       </div>
       <form id="contactForm" name="sentMessage" novalidate="novalidate">
         <div class="row align-items-stretch mb-5">
@@ -138,21 +136,26 @@
         </div>
         <!-- Modal body -->
         <div class="modal-body">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><strong>Số điện thoại: </strong></span>
+          <div class="form-group">
+            <label class="m-0" for="sdt_dn"><h6>Số điện thoại :</h6></label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
+              </div>
+              <input type="text" class="form-control" id="sdt_dn" name="sdt_dn">
             </div>
-            <input type="text" class="form-control" id="sdt_dn" name="sdt_dn" required>
           </div>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><strong>Mật khẩu: </strong></span>
+          <div class="form-group">
+            <label class="m-0" for="sdt_dn"><h6>Mật khẩu :</h6></label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+              </div>
+              <input type="password" class="form-control" id="password_dn" name="password_dn" required>
             </div>
-            <input type="password" class="form-control" id="password_dn" name="password_dn" required>
           </div>
-        </div>
         <!-- Modal footer -->
-        <div class="modal-footer mt-0">
+        <div class="modal-footer pb-0 m-0">
           <button class="btn-phd" id="dangnhap" name="dangnhap" onclick="login()">Đăng nhập</button>
         </div> 
       </div>

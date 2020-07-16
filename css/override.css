@@ -68,27 +68,10 @@ button.close:focus, button.close:active{
   
 }
 
-/*.Table th{
+.Table th{
   margin: 0 auto;
 
-}*/
-
-
-#link {
-  margin-left:40rem !important;
 }
-
-#link #ds{
-  text-decoration: none;
-  padding:0.5rem;
-  background-color: red;
-  color:white;
-}
-
-/*.button a {
-    padding:10px !important;
-    background-color: red !important;
-}*/
 
 #home .home {
   margin:0 auto;
@@ -100,40 +83,30 @@ button.close:focus, button.close:active{
   height:350px;
   border-radius: 100%;
   background-size: cover!important;
-  border: .4rem solid #fed136;
+  border: .4rem solid #425B8C;
   background-color: none !important;
   background-repeat: no-repeat;
 } 
 
 .avatar_gs {
   max-width:100%;
-  height:252px;
+  height:300px;
   background-size: cover!important;
-  border: .4rem solid #fed136;
   background-color: none !important;
   background-repeat: no-repeat;
+  background-position: center;
 }
 
 .avatar_nen {
   background-color: #fed136;
 }
-.fa-angle-double-up{
-  color:white; 
-  width:50px !important;
-  height:50px !important; 
+
+@media only screen and (max-width: 992px) {
+  .pagination {
+    margin-left: 0px !important;
+  }
 }
 
-.fa-angle-double-down{
-  color:white; 
-  width:50px !important;
-  height:50px !important; 
-}
-
-@media all and (max-width: 320px) {
-.avatar {
-   width:150px !important;
-   height:150px !important;
-}
 
 /* ---------- Hoang Duc ---------- */
 
@@ -326,6 +299,7 @@ div#userInfo .button-dx::selection { /* Button dang xuat */
   border: .4rem solid #868e96;
   border-radius: 100%;
   background-size: cover !important;
+  background-position: center;
   background-repeat: no-repeat;
   margin: auto;
   width: 210px;
@@ -335,19 +309,20 @@ div#userInfo .button-dx::selection { /* Button dang xuat */
 .avatar:hover {
   opacity: 0.5;
   background-image: url('../img/img_user/update.png') !important;
-  background-size: contain !important;
-  transition: opacity ease-in-out 0.25s;
+  background-size: cover !important;
+  background-position: center;
+  /*transition: opacity ease-in-out 0.25s;*/
 }
 
 .cc {
-  border: .2rem solid #222F40;
-  border-radius: 8px;
-  background-size: contain;
+  /*background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   margin: auto;
-  widows: 100%;
-  height: 300px;
+  width: 100%;
+  height: 300px;*/
+  text-align: center;
+  justify-content: center;
 }
 
 /* --- */

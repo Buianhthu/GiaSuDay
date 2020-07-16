@@ -1,4 +1,4 @@
-<div class="pagination" style="margin:0 auto">
+<div class="pagination">
   <?php
     if ($current_page > 1) {
       $pre_page = $current_page - 1;

@@ -1,13 +1,7 @@
 <?php
 	session_start();
 
-	function test_input($data) {
-		$data = trim($data);
-		$data = stripslashes($data);
-		$data = htmlspecialchars($data);
-		return $data;
-	}
-
+	require_once('../models/myFunction.php');
 	require_once('../models/data_access_helper.php');
 
 	// Create an instance of data access helper
@@ -15,6 +9,10 @@
 
 	// Connect to database
 	$db->connect();
+
+	// Biến thao tác
+	$email = $sdt = $cmnd = $hovaten = $password = $ngaysinh = $gioitinh = "";
+	$level = 2; // Biến mặc định
 	$insertOK = true;
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
@@ -24,12 +22,10 @@
 			$email = test_input($_GET["email"]);
 			$sdt = test_input($_GET["sdt"]);
 			$cmnd = test_input($_GET["cmnd"]);
-
 			$hovaten = test_input($_GET["hovaten"]);
 			$password = test_input($_GET["password"]);
 			$ngaysinh = test_input($_GET["ngaysinh"]);
 			$gioitinh = test_input($_GET["gioitinh"]);
-			$level = 2; // Biến mặc định
 		}
 
 		if( !preg_match("/^[0-9]*$/", $sdt) || !preg_match("/^[0-9]*$/", $cmnd) )
@@ -39,7 +35,7 @@
 
 		if($insertOK == true) {
 			// Kiểm tra dữ liệu có bị trùng không
-			$sql_check = "SELECT * FROM user WHERE SDT = '" . $sdt . "' OR Email ='" . $email . "'";
+			$sql_check = "SELECT * FROM user WHERE SDT = '$sdt' OR Email = '$email'";
 			$result = $db->executeQuery($sql_check);
 			
 			if($result){
@@ -69,25 +65,22 @@
 					echo '</div>';
 				}
 				else{
-					$sql1 = "INSERT INTO giasu(SDT_GS, HoTen ,NgaySinh, GioiTinh, CMND, KiemDuyet) VALUES('$sdt', '$hovaten' ,'$ngaysinh', '$gioitinh', '$cmnd', 0)";
-					$check1 = $db->executeNonQuery($sql1);
+					$sql = "INSERT INTO giasu(SDT_GS, HoTen ,NgaySinh, GioiTinh, CMND, KiemDuyet) VALUES('$sdt', '$hovaten' ,'$ngaysinh', '$gioitinh', '$cmnd', 0);";
 
-					$sql2 = "INSERT INTO user(SDT, Password, Email, Level, Avatar) VALUES('$sdt', '$password', '$email', '$level', 'img/img_user/user.jpg')";
-					$check2 = $db->executeNonQuery($sql2);
+					$sql .= "INSERT INTO user(SDT, Password, Email, Level, Avatar) VALUES('$sdt', '$password', '$email', '$level', 'img/img_user/user.jpg');";
 
 					// Insert dữ liệu tạm cho những bảng liên quan 
-					$sql3 = "INSERT INTO chungchi(SDT_GS, ImageLink) VALUES('$sdt', 'img/img_cc/nothing.png')";
-					$check3 = $db->executeNonQuery($sql3);
+					$sql .= "INSERT INTO chungchi(SDT_GS, ImageLink) VALUES('$sdt', 'img/img_cc/nothing.png');";
 
-					$sql4 = "INSERT INTO thoigianday(SDT_GS, ThuHai, ThuBa, ThuTu, ThuNam, ThuSau, ThuBay, ChuNhat) VALUES('$sdt', '0', '0', '0', '0', '0', '0', '0')";
-					$check4 = $db->executeNonQuery($sql4);
+					$sql .= "INSERT INTO thoigianday(SDT_GS, ThuHai, ThuBa, ThuTu, ThuNam, ThuSau, ThuBay, ChuNhat) VALUES('$sdt', '0', '0', '0', '0', '0', '0', '0')";
 
-					if($check1 == true && $check2 == true && $check3 == true && $check4 == true) {
+					if($db->executeNonMultiQuery($sql) == true) {
 						$_SESSION['username'] = $sdt;
 						$_SESSION['level'] = $level;
 						$_SESSION['password'] = $password;
 						$_SESSION['avatar'] = 'img/img_user/user.jpg';
 						$_SESSION['LAST_ACTIVITY'] = $_SERVER['REQUEST_TIME'];
+						
 						echo '<div class="alert alert-success alert-dismissible">';
 						echo '<button type="button" class="close" data-dismiss="alert" onclick="reset()">&times;</button>';
 						echo '<strong>Success!</strong> Đăng ký thành công.';

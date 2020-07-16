@@ -51,7 +51,7 @@
   <!-- VIEWS -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="index.php"><img src="assets/img/navbar-logo.svg" /></a>
+      <a class="navbar-brand js-scroll-trigger" href="index.php">GSD<i class="fas fa-chalkboard-teacher" style="font-size: 40px; margin-left:5px"></i></a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu<i class="fas fa-bars ml-1"></i>
       </button>
@@ -146,21 +146,26 @@
         </div>
         <!-- Modal body -->
         <div class="modal-body">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><strong>Số điện thoại: </strong></span>
+          <div class="form-group">
+            <label class="m-0" for="sdt_dn"><h6>Số điện thoại :</h6></label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
+              </div>
+              <input type="text" class="form-control" id="sdt_dn" name="sdt_dn">
             </div>
-            <input type="text" class="form-control" id="sdt_dn" name="sdt_dn" required>
           </div>
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><strong>Mật khẩu: </strong></span>
+          <div class="form-group">
+            <label class="m-0" for="sdt_dn"><h6>Mật khẩu :</h6></label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+              </div>
+              <input type="password" class="form-control" id="password_dn" name="password_dn" required>
             </div>
-            <input type="password" class="form-control" id="password_dn" name="sdt_dn" required>
           </div>
-        </div>
         <!-- Modal footer -->
-        <div class="modal-footer mt-0">
+        <div class="modal-footer pb-0 m-0">
           <button class="btn-phd" id="dangnhap" name="dangnhap" onclick="login()">Đăng nhập</button>
         </div> 
       </div>
