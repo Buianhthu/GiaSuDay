@@ -113,7 +113,7 @@
             <!-- Thông báo cho thành viên khi gia sư nhận lớp -->
             <?php
               if ($_SESSION['level'] == 3){
-                $qr = "SELECT * FROM ThongBao,GiaSu WHERE ThongBao.NguoiGui = GiaSu.SDT_GS ORDER BY NgayThongBao ASC";
+                $qr = "SELECT * FROM TimGiaSu,ThongBao,GiaSu WHERE ThongBao.NguoiGui = GiaSu.SDT_GS AND ThongBao.NguoiNhan = TimGiaSu.SDT_TV ORDER BY NgayThongBao ASC";
                 $result = $conn->query($qr);
                 if($result->num_rows > 0){
                   foreach ($result as $dt){
@@ -126,7 +126,7 @@
                         echo "<td>".$dt['NgayThongBao']."</td>";
                         echo "<td><a id='xndk' href='./controllers/update_confirm_post2.php?xn=".$dt['NguoiNhan']. "' ><i class='far fa-check-circle'></i></a></td>";
                         echo "<td><a id='huydk' href='./controllers/update_confirm_post2.php?huy=".$dt['NguoiNhan']."' ><i class='far fa-times-circle'></i></a></td>";
-                        echo "<td><a href='views/info_course_tv.php' class='btn btn-danger'><i class='fas fa-info-circle'></i></a></td>";
+                        echo "<td><a href='views/info_course_tv.php?&id=".$dt['Id']."' class='btn btn-danger'><i class='fas fa-info-circle'></i></a></td>";
                         echo "</tr>";
                       }
                       elseif ($dt['Seen'] == 1){
@@ -137,7 +137,7 @@
                         echo "<td>".$dt['NgayThongBao']."</td>";
                         echo "<td>Đã cập nhật</td>";
                         echo "<td></td>";
-                        echo "<td><a href='views/info_course_tv.php' class='btn btn-danger'><i class='fas fa-info-circle'></i></a></td>";
+                        echo "<td><a href='views/info_course_tv.php?&id=".$dt['Id']."' class='btn btn-danger'><i class='fas fa-info-circle'></i></a></td>";
                         echo "</tr>";
                     } 
                   }
@@ -172,7 +172,7 @@
                           echo "<td></td>";
                           echo "<td>".$dt['NoiDung']."</td>";
                           echo "<td>".$dt['NgayThongBao']."</td>";
-                          echo "<td><a href='views/info_course_gs1.php' class='btn btn-danger'>Xem chi tiết</a></td>";
+                          echo "<td><a href='views/info_course_gs1.php?&id=".$dt['Id']."' class='btn btn-danger'>Xem chi tiết</a></td>";
                           echo "<td></td>";
                           echo "<td></td>";
                           echo "</tr>";
@@ -197,9 +197,9 @@
                         echo "<td>".$dt['NguoiGui']."</td>";
                         echo "<td>".$dt['NoiDung']."</td>";
                         echo "<td>".$dt['NgayThongBao']."</td>";
-                        echo "<td><a href='./controllers/update_confirm_bookgs2.php?xn=".$dt['NguoiNhan']. "' id='xndk'><i class='far fa-check-circle'></i></a></td>";
+                        echo "<td><a href='./controllers/update_confirm_bookgs2.php?&xn=".$dt['Id']."' id='xndk'><i class='far fa-check-circle'></i></a></td>";
                         echo "<td><a href='./controllers/update_confirm_bookgs2.php?huy=".$dt['NguoiNhan']."' id='huydk'><i class='far fa-times-circle'></i></a></td>";
-                        echo "<td><a href='views/info_book_gs.php' class='btn btn-danger'><i class='fas fa-info-circle'></i></a></td>";
+                        echo "<td><a href='views/info_book_gs.php?&id=".$dt['Id']."' class='btn btn-danger'><i class='fas fa-info-circle'></i></a></td>";
                         echo "</tr>";
                       }
                       elseif ($dt['Seen']==1){
@@ -209,7 +209,7 @@
                         echo "<td>".$dt['NoiDung']."</td>";
                         echo "<td>".$dt['NgayThongBao']."</td>";
                         echo "<td>Đã cập nhật</td>";
-                        echo "<td><a href='views/info_book_gs.php' class='btn btn-danger'><i class='fas fa-info-circle'></i></a></td>";
+                        echo "<td><a href='views/info_book_gs.php?&id=".$dt['Id']."' class='btn btn-danger'><i class='fas fa-info-circle'></i></a></td>";
                         echo "<td></td>";
                         echo "</tr>";
                       }
@@ -233,7 +233,8 @@
                           echo "<td></td>";
                           echo "<td>".$dt['NoiDung']."</td>";
                           echo "<td>".$dt['NgayThongBao']."</td>";
-                          echo "<td><a href='views/info_book_tv.php' class='btn btn-danger'><i class='fas fa-info-circle'></i></a></td>";
+                          echo "<td><a href='views/info_book_tv.php?&id=".$dt['Id']."'' class='btn btn-danger'><i class='fas fa-info-circle'></i></a></td>";
+                          echo "<td></td>";
                           echo "<td></td>";
                           echo "</tr>";
                       }

@@ -6,7 +6,10 @@ session_start();
 
     // Connect to database
     $db->connect();
-    $qr = "SELECT * FROM ThongBao,GiaSu,User WHERE ThongBao.NguoiGui = GiaSu.SDT_GS AND GiaSu.SDT_GS = User.SDT";
+    if (isset($_GET['id'])){
+      $id = $_GET['id'];
+    }
+    $qr = "SELECT * FROM ThongBao,GiaSu,User WHERE ThongBao.NguoiGui = GiaSu.SDT_GS AND GiaSu.SDT_GS = User.SDT AND Id = $id";
     $result = $conn->query($qr);
 ?>
 

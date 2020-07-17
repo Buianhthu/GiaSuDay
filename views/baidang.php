@@ -75,10 +75,10 @@
                         echo "<li>";
                         echo "<p class='text-muted'>"."Học Phí: ".$dt['HocPhi']."</p>";
                         echo "</li>";
+                        echo "<li><a id='confirm' href='./controllers/update_confirm_post.php?id=".$dt['Id']."'>Nhận lớp ngay</a></li>";
                         echo "<li>";
                         echo "<a href='views/info_course_gs.php?id=".$dt['Id']."' class='btn btn-danger mt-5'>Xem chi tiết</a>";
                         echo "</li>";
-                        echo "<li><a id='confirm' href='./controllers/update_confirm_post.php?id=".$dt['Id']."'>Nhận lớp ngay</a></li>";
                         echo "</ul>";
                         echo "</div>";
                     }    
@@ -109,6 +109,9 @@
                         echo "<p class='text-muted'>"."Học Phí: ".$dt['HocPhi']."</p>";
                         echo "</li>";
                         echo "<li><a id='myBtn' href='./controllers/update_confirm_post.php?id=".$dt['Id']."'style='pointer-events: none'>Chờ xác nhận</a></li>";
+                        echo "<li>";
+                        echo "<a href='views/info_course_gs.php?id=".$dt['Id']."' class='btn btn-danger mt-5'>Xem chi tiết</a>";
+                        echo "</li>";
                         echo "</ul>";
                         echo "</div>";
                     }     

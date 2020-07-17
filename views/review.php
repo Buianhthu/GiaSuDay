@@ -42,7 +42,7 @@
                         {
                           echo "<li class='timeline-inverted'>";
                           
-                          echo '<div class="timeline-image avt" style="background-image:url('."'../".$dt["Avatar"]."'".')"></div>';
+                          echo '<div class="timeline-image avt" style="background-image:url('."'".$dt["Avatar"]."'".')"></div>';
                           echo "<div class='timeline-panel'>";
                           echo "<div class='timeline-heading'>";
                           echo "<h4>".$dt['NgayDang']."</h4>";
@@ -55,7 +55,7 @@
                         } else {
                           echo "<li>";
                           
-                          echo '<div class="timeline-image avt" style="background-image:url('."'../".$dt["Avatar"]."'".')"></div>';
+                          echo '<div class="timeline-image avt" style="background-image:url('."'".$dt["Avatar"]."'".')"></div>';
                           echo "<div class='timeline-panel'>";
                           echo "<div class='timeline-heading'>";
                           echo "<h4>".$dt['NgayDang']."</h4>";

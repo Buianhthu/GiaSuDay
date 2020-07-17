@@ -14,6 +14,7 @@
     // Connect to database
     $db->connect();
 
+    $user_name = $_SESSION ['username'];
     // Thành viên xác nhận lớp học. 
     if(isset($_GET['xn'])){
         $xn = $_GET['xn'];
@@ -30,7 +31,7 @@
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $today = date("Y-m-d H-m-s");
         foreach ($result as $dt) {
-            $insert = "INSERT INTO thongbao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('admin', '".$dt['NguoiGui']."' ,'1', '".$nd."','".$today."', '0')";
+            $insert = "INSERT INTO thongbao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('".$user_name."', '".$dt['NguoiGui']."' ,'1', '".$nd."','".$today."', '0')";
             }
 
         $check1 = $db->executeNonQuery($update1);

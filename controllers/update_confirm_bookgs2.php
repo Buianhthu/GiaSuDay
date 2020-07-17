@@ -13,21 +13,24 @@
 
     // Connect to database
     $db->connect();
+    $user_name = $_SESSION ['username'];
 
     // Gia su xác nhận lớp học. 
-    if(isset($_GET['xn'])){
-        $xn = $_GET['xn'];
+
+    if (isset($_GET['xn'])){
+        $id = $_GET['xn'];
+    }
         // Update Seen = 1;
-        $update = "UPDATE thongbao SET Seen = '1' WHERE NguoiNhan = $xn";
+        $update = "UPDATE thongbao SET Seen = '1' WHERE Id = $id";
 
         // Thông báo cho thanh vien 
-        $tv = "SELECT NguoiGui FROM thongbao WHERE NguoiNhan = $xn";
+        $tv = "SELECT NguoiGui FROM thongbao WHERE Id = $id";
         $result = $conn->query($tv);
         $nd = "Gia sư đã được đồng ý lời mời dạy học của bạn.";
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $today = date("Y-m-d");
         foreach ($result as $dt) {
-            $insert = "INSERT INTO thongbao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('admin', '".$dt['NguoiGui']."' ,'1', '".$nd."','".$today."', '0')";
+            $insert = "INSERT INTO thongbao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('".$user_name."', '".$dt['NguoiGui']."' ,'1', '".$nd."','".$today."', '0')";
             }
         $check1 = $db->executeNonQuery($update);
         $check2 = $db->executeNonQuery($insert);
@@ -47,9 +50,8 @@
             echo "</div>";
         }
         
-    }
     // Thành viên huỷ lớp học
-    elseif (isset($_GET['huy'])) {
+    if(isset($_GET['huy'])) {
         $huy = $_GET['huy'];
 
         //Update Seen = 1;
@@ -62,7 +64,7 @@
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $today = date("Y-m-d");
         foreach ($result as $dt) {
-            $insert = "INSERT INTO ThongBao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('admin', '".$dt['NguoiGui']."' ,'1', '".$nd."','".$today."', '0')";
+            $insert = "INSERT INTO ThongBao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('".$user_name."', '".$dt['NguoiGui']."' ,'1', '".$nd."','".$today."', '0')";
             }
 
         $check = $db -> executeNonquery($update);

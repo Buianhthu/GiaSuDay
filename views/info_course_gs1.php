@@ -37,9 +37,10 @@ session_start();
     <?php
       require_once ('navigation.php');
     ?>
-     <div class="container">
-        <a id='home' href='../index.php' class='btn btn-danger mt-5'><i class="fas fa-home"></i>Trang chủ</a></button>
-    </div>
+    <br>
+    <br>
+    <br>
+    <br>
 	<div class="container">
 	  <h2>THÔNG TIN LỚP HỌC & HỌC VIÊN</h2>
 	  <table class="table">
