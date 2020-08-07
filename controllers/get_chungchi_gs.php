@@ -11,10 +11,10 @@
 	// Connect to database
 	$db->connect();
 
-	$sdt = $_SESSION['username'];
+	$username = $_SESSION['username'];
 
 	// Lấy dữ liệu
-	$sql = "SELECT * FROM chungchi WHERE SDT_GS = '" . $sdt . "'";
+	$sql = "SELECT * FROM chungchi WHERE Username = '$username'";
 	$result = $db->executeQuery($sql);
 	
 	if($result){

@@ -20,45 +20,44 @@
 
     if ($_SESSION['level'] == 1 || $_SESSION['level'] == 3)
     {
-        echo "<div class='container'>";
-        echo "<div class='alert alert-danger'>";
+        // echo "<div class='container'>";
+        // echo "<div class='alert alert-danger'>";
         echo "<strong>Xin lỗi bạn không phải là gia sư nên không thể nhận lớp!</strong>";
-        echo "</div>";
-        echo "</div>";
+        // echo "</div>";
+        // echo "</div>";
     }
     else {
             if(isset($_GET['id'])){
             $id = $_GET['id'];
             }
             //Update Status Từ -1 -> 0.
-            $update = "UPDATE TimGiaSu SET TinhTrang = '0' WHERE Id = $id";
+             $update = "UPDATE BaiDang SET TinhTrang = '0' WHERE Id = $id";
 
             //Thông báo cho TV
-            $tv = "SELECT SDT_TV FROM timgiasu WHERE Id = $id";
+            $tv = "SELECT Username FROM baidang WHERE Id = $id";
             $result = $conn->query($tv);
             $nd = "Gia sư đã nhận bài tìm gia sư của bạn. Bạn hãy xác nhận.";
             date_default_timezone_set('Asia/Ho_Chi_Minh');
             $today = date("Y-m-d");
             foreach ($result as $dt) {
-                $insert = "INSERT INTO ThongBao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('".$user_name."', '".$dt['SDT_TV']."' ,'-1', '".$nd."','".$today."', '0')";
+                $insert = "INSERT INTO ThongBao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('".$user_name."', '".$dt['Username']."' ,'-1', '".$nd."','".$today."', '0')";
             }
-            $check = $db->executeNonQuery($update);
+            $check = $db -> executeNonQuery ($update);
             $check2 = $db->executeNonQuery($insert);
 
             if($check == true) {
-                echo "<div class='container'>";
-                echo "<div class='alert alert-success'>";
+                // echo "<div class='container'>";
+                // echo "<div class='alert alert-success'>";
                 echo "<strong>Bạn đã nhận lớp thành công!</strong>";
-                echo "</div>";
-                echo "</div>";
-                // require_once ('../views/info_course_gs.php');
+                // echo "</div>";
+                // echo "</div>";
             }
             else{
-                echo "<div class='container'>";
-                echo "<div class='alert alert-success'>";
+                // echo "<div class='container'>";
+                // echo "<div class='alert alert-success'>";
                 echo "<strong>Nhận lớp không thành công</strong>";
-                echo "</div>";
-                echo "</div>";
+                // echo "</div>";
+                // echo "</div>";
             }
 
             

@@ -1,17 +1,5 @@
-<?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 900;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
-  if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 1){
-    header("location:../index.php");
-  }
-?>
+<?php require_once('controllers/check_session.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +16,7 @@
 
   <script type="text/javascript">
     function huyduyetdkgs(temp) {
-      var SDT_GS = temp.getAttribute("data-id");
+      var username = temp.getAttribute("data-id");
       var xhttp;
       xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -38,12 +26,12 @@
           else alert('ERROR: Có lỗi trong quá trình xử lý !');
         }
       };
-      xhttp.open("GET", "controllers/huyduyetdkgs.php?id=" + SDT_GS, true);
+      xhttp.open("GET", "controllers/huyduyetdkgs.php?username=" + username, true);
       xhttp.send();
     }
 
     function duyetdkgs(temp) {
-      var SDT_GS = temp.getAttribute("data-id");
+      var username = temp.getAttribute("data-id");
       var xhttp;
       xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -53,7 +41,7 @@
           else alert('ERROR: Có lỗi trong quá trình xử lý !');
         }
       };
-      xhttp.open("GET", "controllers/duyetdkgs.php?id=" + SDT_GS, true);
+      xhttp.open("GET", "controllers/duyetdkgs.php?username=" + username, true);
       xhttp.send();
     }
   </script>
@@ -134,10 +122,11 @@
             <table class="table table-hover table-striped">
               <thead class="thead-dark">
                 <tr>
-                  <th>Số Điện Thoại</th>
+                  <th>Username</th>
                   <th>Họ Tên</th>
                   <th>Ngày Sinh</th>
                   <th>Giới Tính</th>
+                  <th>CMND</th>
                   <th>Kiểm Duyệt</th>
                   <th>Actions</th>
                 </tr>
@@ -184,6 +173,7 @@
                   echo "<td>" . $row[1] . "</td>";
                   echo "<td>" . $row[2] . "</td>";
                   echo "<td>" . $row[3] . "</td>";
+                  echo "<td>" . $row[4] . "</td>";
 
                   if($row[10]== 1)
                   {
@@ -196,7 +186,7 @@
                     echo '<td><button class="icon icon-duyet" data-id="'. $row[0] .'" onclick="duyetdkgs(this)"><i class="fas fa-check-circle"></i></button>';
                   }
 
-                  echo '<button class="icon"><a class="icon" href="detaildk_gs.php?id='.$row[0].'"> <i class="fas fa-info-circle"></i></a></button></td>';
+                  echo '<button class="icon"><a class="icon" href="detaildk_gs.php?username='.$row[0].'"> <i class="fas fa-info-circle"></i></a></button></td>';
                   echo "</tr>";
                 }
 

@@ -17,8 +17,8 @@
 
     // Gia su xác nhận lớp học. 
 
-    if (isset($_GET['xn'])){
-        $id = $_GET['xn'];
+    if (isset($_GET['id'])){
+        $id = $_GET['id'];
     }
         // Update Seen = 1;
         $update = "UPDATE thongbao SET Seen = '1' WHERE Id = $id";
@@ -35,53 +35,14 @@
         $check1 = $db->executeNonQuery($update);
         $check2 = $db->executeNonQuery($insert);
         if ($check1 == true && $check2 == true){
-            echo "<div class='container'>";
-            echo "<div class='alert alert-success'>";
+            
             echo "<strong>Xác nhận thành công! </br> Bạn hãy liên lạc với người học để bắt đầu nhé!</strong>";
-            echo "</div>";
-            echo "</div>";
-            // require_once ('../views/info_book_gs.php');
+            
          }
          else{
-            echo "<div class='container'>";
-            echo "<div class='alert alert-danger'>";
+            
             echo "<strong>Xác nhận không thành công! </strong>";
-            echo "</div>";
-            echo "</div>";
+            
         }
-        
-    // Thành viên huỷ lớp học
-    if(isset($_GET['huy'])) {
-        $huy = $_GET['huy'];
-
-        //Update Seen = 1;
-        $update1 = "UPDATE thongbao SET Seen = '1' WHERE NguoiNhan = $xn";
-
-        // Thông báo cho thanh vien
-        $tv = "SELECT NguoiGui FROM thongbao WHERE NguoiNhan = $xn";
-        $result = $conn->query($tv);
-        $nd = "Lớp học".$xn."không được xác nhận.";
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $today = date("Y-m-d");
-        foreach ($result as $dt) {
-            $insert = "INSERT INTO ThongBao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('".$user_name."', '".$dt['NguoiGui']."' ,'1', '".$nd."','".$today."', '0')";
-            }
-
-        $check = $db -> executeNonquery($update);
-        if ($check == true){
-            echo "<div class='container'>";
-            echo "<div class='alert alert-success'>";
-            echo "<strong>Huỷ thành công!</strong>";
-            echo "</div>";
-            echo "</div>";
-        }
-        else {
-            echo "<div class='container'>";
-            echo "<div class='alert alert-danger'>";
-            echo "<strong>Huỷ không thành công! </strong>";
-            echo "</div>";
-            echo "</div>";
-        }
-    }
 
 ?>

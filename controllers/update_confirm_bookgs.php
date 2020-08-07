@@ -20,11 +20,9 @@
 
     if ($_SESSION['level'] == 2)
     {
-        echo "<div class='container'>";
-        echo "<div class='alert alert-danger'>";
+        
         echo "<strong>Bạn đã là gia sư nên không thực hiện được chức năng này!</strong>";
-        echo "</div>";
-        echo "</div>";
+        
     }
     else {
             if(isset($_GET['id'])){
@@ -32,29 +30,25 @@
             }
 
             //Thông báo cho GS
-            $tv = "SELECT SDT_GS FROM giasu WHERE SDT_GS = $sdt_gs";
+            $tv = "SELECT Username FROM giasu WHERE Username = '$sdt_gs'";
             $result = $conn->query($tv);
             $nd = "Bạn nhận được lời mời dạy học. Mời bạn xác nhận.";
             date_default_timezone_set('Asia/Ho_Chi_Minh');
             $today = date("Y-m-d");
             foreach ($result as $dt) {
-                $insert = "INSERT INTO ThongBao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('".$user_name."', '".$dt['SDT_GS']."' ,'-1', '".$nd."','".$today."', '0')";
+                $insert = "INSERT INTO ThongBao (NguoiGui,NguoiNhan,Loai,NoiDung,NgayThongBao,Seen) VALUES ('".$user_name."', '".$dt['Username']."' ,'-1', '".$nd."','".$today."', '0')";
             }
             $check = $db->executeNonQuery($insert);
 
             if($check == true) {
-                echo "<div class='container'>";
-                echo "<div class='alert alert-success'>";
+                
                 echo "<strong>Bạn đã chọn gia sư thành công! Chờ xác nhận nhé !!!</strong>";
-                echo "</div>";
-                echo "</div>";
+                
             }
             else{
-                echo "<div class='container'>";
-                echo "<div class='alert alert-success'>";
+                
                 echo "<strong>Nhận lớp không thành công</strong>";
-                echo "</div>";
-                echo "</div>";
+                
             }
 
             

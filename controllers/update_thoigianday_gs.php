@@ -11,14 +11,14 @@
 	$db->connect();
 
 	// Biến thao tác
-	$sdt = $thuhai = $thuba = $thutu = $thunam = $thusau = $thubay = $chunhat = "";
+	$username = $thuhai = $thuba = $thutu = $thunam = $thusau = $thubay = $chunhat = "";
 	$updateOK = true;
 
 	if($_SERVER["REQUEST_METHOD"] == "GET"){
-		if(empty($_GET["sdt"]))
+		if(empty($_GET["username"]))
 			$updateOK = false;
 		else{
-			$sdt = test_input($_GET["sdt"]);
+			$username = test_input($_GET["username"]);
 			$thuhai = test_input($_GET["thuhai"]);
 			$thuba = test_input($_GET["thuba"]);
 			$thutu = test_input($_GET["thutu"]);
@@ -28,14 +28,18 @@
 			$chunhat = test_input($_GET["chunhat"]);
 		}
 
-		if($updateOK == true){
-			$sql = "UPDATE thoigianday SET ThuHai ='$thuhai', ThuBa ='$thuba', ThuTu ='$thutu', ThuNam ='$thunam', ThuSau ='$thusau', ThuBay ='$thubay', ChuNhat ='$chunhat' WHERE SDT_GS ='$sdt';";
+		if($updateOK){
+			$sql = "UPDATE thoigianday SET ThuHai ='$thuhai', ThuBa ='$thuba', ThuTu ='$thutu', ThuNam ='$thunam', ThuSau ='$thusau', ThuBay ='$thubay', ChuNhat ='$chunhat' WHERE Username ='$username';";
 
-			if($db->executeNonQuery($sql)) echo "1";
-			else echo "0";
+			if($db->executeNonQuery($sql)) echo 1;
+			else echo -2;
 		}
-		else echo "0";
+		else echo -2;
 	}
+	else echo -2;
+
+	// -2 : Lỗi xử lý
+	// 1 : Không có lỗi
 
 	$db->close();
 ?>

@@ -11,28 +11,33 @@
 	$db->connect();
 
 	// Biến thao tác
-	$sdt = $fb = "";
+	$username = $fb = "";
 	$updateOK = true;
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
-		if(empty($_GET["sdt"]) || empty($_GET["fb"]))
+		if(empty($_GET["username"]) || empty($_GET["fb"]))
 			$updateOK = false;
 		else{
-			$sdt = test_input($_GET["sdt"]);
+			$username = test_input($_GET["username"]);
 			$fb = test_input($_GET["fb"]);
 		}
 
 		if( !filter_var($fb, FILTER_VALIDATE_URL) )
 			$updateOK = false;
 
-		if($updateOK == true){
-			$sql = "UPDATE user SET LinkFB = '$fb' WHERE SDT = '$sdt';";
+		if($updateOK){
+			$sql = "UPDATE user SET Facebook = '$fb' WHERE Username = '$username';";
 
-			if($db->executeNonQuery($sql)) echo "1";
-			else echo "0";
+			if($db->executeNonQuery($sql)) echo 1;
+			else echo -2;
 		}
-		else echo "0";
+		else echo -1;
 	}
+	else echo -2;
+
+	// -2 : Lỗi xử lý
+	// -1 : Lỗi LinkFB không hợp lệ
+	// 1 : Không có lỗi
 
 	$db->close();
 ?>

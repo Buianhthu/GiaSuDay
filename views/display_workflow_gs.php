@@ -11,15 +11,15 @@
 	// Connect to database
 	$db->connect();
 
-	$sdt = $_SESSION['username'];
+	$username = $_SESSION['username'];
 
 	// Lấy dữ liệu
-	$sql = "SELECT * FROM user, giasu WHERE SDT = SDT_GS AND SDT = '" . $sdt . "'";
+	$sql = "SELECT * FROM user, giasu WHERE user.Username = giasu.Username AND user.Username = '$username'";
 	$result = $db->executeQuery($sql);
 	
 	if($result){
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-			echo '<ul class="list-group list-group-flush mt-4">';
+			echo '<ul class="list-group list-group-flush mt-5 mb-2">';
 			echo '<li class="list-group-item"><strong>Lĩnh vực : </strong>'. $row['LinhVuc'] .'</li>';
 			echo '<li class="list-group-item"><strong>Chuyên ngành : </strong>'. $row['ChuyenNganh'] .'</li>';
 			echo '<li class="list-group-item"><strong>Học vị : </strong>'. $row['HocVi'] .'</li>';

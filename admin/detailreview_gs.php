@@ -1,17 +1,5 @@
-<?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 900;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
-  if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 1){
-    header("location:../index.php");
-  }
-?>
+<?php require_once('controllers/check_session.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +14,7 @@
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
   <script type="text/javascript">
     function huyduyetreviewgs(temp) {
-      var ID = temp.getAttribute("data-id");
+      var username = temp.getAttribute("data-id");
       var xhttp;
       xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -36,12 +24,12 @@
           else alert('ERROR: Có lỗi trong quá trình xử lý !');
         }
       };
-      xhttp.open("GET", "controllers/huyduyetreviewgs.php?id=" + ID, true);
+      xhttp.open("GET", "controllers/huyduyetreviewgs.php?username=" + username, true);
       xhttp.send();
     }
 
     function duyetreviewgs(temp) {
-      var ID = temp.getAttribute("data-id");
+      var username = temp.getAttribute("data-id");
       var xhttp;
       xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -51,7 +39,7 @@
           else alert('ERROR: Có lỗi trong quá trình xử lý !');
         }
       };
-      xhttp.open("GET", "controllers/duyetreviewgs.php?id=" + ID, true);
+      xhttp.open("GET", "controllers/duyetreviewgs.php?username=" + username, true);
       xhttp.send();
     }
   </script>
@@ -114,28 +102,27 @@
         <div id="main">
           <div class="container">
             <div id="notification"></div>
-            <h2>Thông tin chi tiết bài viết đánh giá gia sư</h2>
+            <h2>Thông tin chi tiết bài review</h2>
             <?php
             require_once("controllers/data_access_helper.php");
             $db = new DataAccessHelper();
             $db->connect();
-            $id = $_GET['id'];
-            $sql = "select * from review where Id = '$id'";
+            $username = $_GET['username'];
+            $sql = "SELECT * FROM review WHERE Username = '$username'";
             $result = $db->executeQuery($sql);
             while ($row = $result->fetch_array()) 
             {
               echo '<ul class = "list-group list-group-flush mt-4">';
-              echo '<li class = "list-group-item"><strong>ID: </strong>' . $row['Id'] . '</li>';
-              echo '<li class = "list-group-item"><strong>Số Điện Thoại (Người đăng): </strong>' . $row['SDT_TV'] . '</li>';
+              echo '<li class = "list-group-item"><strong>Người đăng: </strong>' . $row['Username'] . '</li>';
               echo '<li class = "list-group-item"><strong>Nội Dung: </strong>' . $row['NoiDung'] . '</li>';
               echo '<li class = "list-group-item"><strong>Ngày Đăng: </strong>' . $row['NgayDang'] . '</li>';
 
-              if ($row['KiemDuyet'] == '1') {
+              if ($row['KiemDuyet'] == 1) {
                 echo '<li class = "list-group-item"><strong>Kiểm Duyệt: </strong>Đã duyệt</li>';
-                echo '<button class="btn btn-danger mt-5"  data-id="'. $row['Id'] .'" onclick="huyduyetreviewgs(this)">Hủy kiểm duyệt</button>';
+                echo '<button class="btn btn-danger mt-5"  data-id="'. $row['Username'] .'" onclick="huyduyetreviewgs(this)">Hủy kiểm duyệt</button>';
               } else {
                 echo '<li class = "list-group-item"><strong>Kiểm Duyệt: </strong>Chưa duyệt</li>';
-                echo '<button class="btn btn-primary mt-5"  data-id="'. $row['Id'] .'" onclick="duyetreviewgs(this)">kiểm duyệt</button>';
+                echo '<button class="btn btn-primary mt-5"  data-id="'. $row['Username'] .'" onclick="duyetreviewgs(this)">kiểm duyệt</button>';
               }
               echo '</ul>';
             }

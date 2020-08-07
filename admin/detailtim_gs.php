@@ -1,17 +1,5 @@
-<?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 900;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
-  if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 1){
-    header("location:../index.php");
-  }
-?>
+<?php require_once('controllers/check_session.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -110,38 +98,155 @@
 
         <!-- Begin duyet tim kiem gia su-->
         <div id="main">
-          <div class="container">
+          <div class="container mb-5">
             <div id="notification"></div>
             <h2>Thông tin chi tiết bài viết tìm kiếm gia sư</h2>
             <?php
-            require_once("controllers/data_access_helper.php");
-            $db = new DataAccessHelper();
-            $db->connect();
-            $id = $_GET['id'];
-            $sql = "select * from timgiasu where Id = '$id'";
-            $result = $db->executeQuery($sql);
-            while ($row = $result->fetch_array()) 
-            {
-              echo '<ul class = "list-group list-group-flush mt-4">';
-              echo '<li class = "list-group-item"><strong>ID: </strong>' . $row['Id'] . '</li>';
-              echo '<li class = "list-group-item"><strong>Số điện Thoại (Người đăng): </strong>' . $row['SDT_TV'] . '</li>';
-              echo '<li class = "list-group-item"><strong>Tên Môn Học: </strong>' . $row['TenMonHoc'] . '</li>';
-              echo '<li class = "list-group-item"><strong>Nội Dung: </strong>' . $row['NoiDung'] . '</li>';
-              echo '<li class = "list-group-item"><strong>Thời Gian Học: </strong>' . $row['ThoiGianHoc'] . '</li>';
-              echo '<li class = "list-group-item"><strong>Học Phí: </strong>' . $row['HocPhi'] . '</li>';
-              echo '<li class = "list-group-item"><strong>Tình Trạng: </strong>' . $row['TinhTrang'] . '</li>';
-              echo '<li class = "list-group-item"><strong>Ngày Đăng: </strong>' . $row['NgayDang'] . '</li>';
+              require_once("controllers/data_access_helper.php");
+              $db = new DataAccessHelper();
+              $db->connect();
+              $id = $_GET['id'];
+              $sql = "SELECT * FROM baidang, thoigianhoc WHERE baidang.Id = thoigianhoc.Id AND baidang.Id = '$id'";
+              $result = $db->executeQuery($sql);
+              while ($row = $result->fetch_array()) 
+              {
+                echo '<ul class = "list-group list-group-flush mt-4">';
+                echo '<li class = "list-group-item"><strong>ID: </strong>' . $row['Id'] . '</li>';
+                echo '<li class = "list-group-item"><strong>Người đăng: </strong>' . $row['Username'] . '</li>';
+                echo '<li class = "list-group-item"><strong>Môn Học: </strong>' . $row['MonHoc'] . '</li>';
+                echo '<li class = "list-group-item"><strong>Nội Dung: </strong>' . $row['NoiDung'] . '</li>';
+                echo '<li class = "list-group-item"><strong>Ngày Đăng: </strong>' . $row['NgayDang'] . '</li>';
+                echo '<li class = "list-group-item"><strong>Học Phí: </strong>' . $row['HocPhi'] . '</li>';
+                echo '<li class = "list-group-item" style="text-align:center"><strong>Thời gian học</strong>';
+                  echo '<table class="table table-hover table-responsive mt-2" style="text-align:center;">
+                        <thead class="thead-dark" style="width:auto">
+                          <tr>
+                            <th style="width:20%"></th>
+                            <th style="width:12%">Thứ hai</th>
+                            <th style="width:12%">Thứ ba</th>
+                            <th style="width:12%">Thứ tư</th>
+                            <th style="width:12%">Thứ năm</th>
+                            <th style="width:12%">Thứ sáu</th>
+                            <th style="width:12%">Thứ bảy</th>
+                            <th style="width:12%">Chủ nhật</th>
+                          </tr>
+                        </thead>
+                        <tbody id="content">';
+                        echo '<tr>';
+                        echo '<td>Sáng (8h - 11h)</td>';
+                        if(strpos($row['ThuHai'], '1') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuBa'], '1') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuTu'], '1') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuNam'], '1') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuSau'], '1') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuBay'], '1') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ChuNhat'], '1') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        echo '</tr>';
 
-              if ($row['KiemDuyet'] == '1') {
+                        // Chiều
+                        echo '<tr>';
+                        echo '<td>Chiều (15h - 18h)</td>';
+                        if(strpos($row['ThuHai'], '2') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuBa'], '2') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuTu'], '2') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuNam'], '2') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuSau'], '2') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuBay'], '2') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ChuNhat'], '2') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        echo '</tr>';
 
-                echo '<li class = "list-group-item"><strong>Kiểm Duyệt: </strong>Đã duyệt</li>';
-                echo '<button class="btn btn-danger mt-5" data-id="' . $row['Id'] . '" onclick="huyduyettimgs(this)">Hủy duyệt</button>';
-              } else {
-                echo '<li class = "list-group-item"><strong>Kiểm Duyệt: </strong>Chưa duyệt</li>';
-                echo '<button class="btn btn-primary mt-5" data-id="' . $row['Id'] . '" onclick="duyettimgs(this)">Duyệt</button>';
+                        // Tối
+                        echo '<tr>';
+                        echo '<td>Tối (18h - 21h)</td>';
+                        if(strpos($row['ThuHai'], '3') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuBa'], '3') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuTu'], '3') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuNam'], '3') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuSau'], '3') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ThuBay'], '3') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        if(strpos($row['ChuNhat'], '3') !== false){
+                          echo '<td><i class="far fa-check-circle"></i></td>';
+                        }
+                        else echo '<td></td>';
+                        echo '</tr>';
+                  echo '</tbody></table>';
+
+                if ($row['TinhTrang'] == -1)
+                  echo '<li class = "list-group-item"><strong>Tình trạng: </strong>Chờ duyệt - Chờ đăng ký</li>';
+                else if ($row['TinhTrang'] == 0)
+                  echo '<li class = "list-group-item"><strong>Tình trạng: </strong>Chờ xác nhận</li>';
+                else '<li class = "list-group-item"><strong>Tình trạng: </strong>Hoàn thành</li>';
+
+                if ($row['KiemDuyet'] == 1) {
+                  echo '<li class = "list-group-item"><strong>Kiểm Duyệt: </strong>Đã duyệt</li>';
+                  echo '<button class="btn btn-danger mt-5" data-id="' . $row['Id'] . '" onclick="huyduyettimgs(this)">Hủy duyệt</button>';
+                } 
+                else {
+                  echo '<li class = "list-group-item"><strong>Kiểm Duyệt: </strong>Chưa duyệt</li>';
+                  echo '<button class="btn btn-primary mt-5" data-id="' . $row['Id'] . '" onclick="duyettimgs(this)">Duyệt</button>';
+                }
+                echo '</ul>';
               }
-              echo '</ul>';
-            }
             ?>
 
           </div>

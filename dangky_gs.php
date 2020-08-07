@@ -1,14 +1,4 @@
-<?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 30;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
-?>
+<?php require_once('controllers/check_session.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,11 +17,10 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
   <!-- Jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <!-- Core theme CSS (includes Bootstrap)-->
   <link href="css/styles.css" rel="stylesheet"/>
   <link href="css/override.css" rel="stylesheet" />
-
   <script type="text/javascript">
     function reset(){
       document.getElementById("hovaten").value = '';
@@ -77,17 +66,17 @@
     <!-- FORM INSERT -->
     <div class="input-group mb-3">
       <div class="input-group-prepend">
-        <span class="input-group-text"><strong>Họ và tên:</strong></span>
+        <span class="input-group-text"><strong>Họ và tên :</strong></span>
       </div>
-      <input type="text" class="form-control" id="hovaten" name="hovaten">
+      <input type="text" class="form-control" id="hovaten" name="hovaten" placeholder="Nguyễn Văn A">
     </div>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
-        <span class="input-group-text"><strong>Ngày sinh:</strong></span>
+        <span class="input-group-text"><strong>Ngày sinh :</strong></span>
       </div>
       <input type="date" class="form-control" id="ngaysinh" name="ngaysinh">
     </div>
-    <div class="form-group ml-2"><strong>Giới tính: </strong>
+    <div class="form-group ml-2"><strong>Giới tính : </strong>
       <div class="form-check-inline ml-3">
         <label class="form-check-label" for="radioNam">
           <input type="radio" class="form-check-input" id="radioNam" name="gioitinh" value="Nam">Nam
@@ -99,38 +88,56 @@
         </label>
       </div>
     </div>
-    <div class="input-group mb-3">
+
+    <div class="input-group mb-1">
       <div class="input-group-prepend">
-        <span class="input-group-text"><strong>Email:</strong></span>
+        <span class="input-group-text"><strong>Email :</strong></span>
       </div>
-      <input type="text" class="form-control" id="email" name="email">
+      <input type="text" class="form-control" id="email" name="email" placeholder="abc@gmail.com">
     </div>
-    <div class="input-group mb-3">
+    <div class="mb-3 message" id="mess-email"></div>
+
+    <div class="input-group mb-1">
       <div class="input-group-prepend">
-        <span class="input-group-text"><strong>Số điện thoại:</strong></span>
+        <span class="input-group-text"><strong>Số điện thoại :</strong></span>
       </div>
-      <input type="text" class="form-control" id="sdt" name="sdt" onkeypress="validateNumber(event)" placeholder="Đây là SĐT để liên lạc cho việc dạy học">
+      <input type="text" class="form-control only-number" id="sdt" name="sdt" placeholder="Đây là SĐT để liên lạc cho việc dạy học">
     </div>
-    <div class="input-group mb-3">
+    <div class="mb-3 message" id="mess-sdt"></div>
+
+    <div class="input-group mb-1">
       <div class="input-group-prepend">
-        <span class="input-group-text"><strong>Số CMND:</strong></span>
+        <span class="input-group-text"><strong>Số CMND :</strong></span>
       </div>
-      <input type="text" class="form-control" id="cmnd" name="cmnd" onkeypress="validateNumber(event)">
+      <input type="text" class="form-control only-number" id="cmnd" name="cmnd">
     </div>
-    <div class="input-group mb-3">
+    <div class="mb-3 message" id="mess-cmnd"></div>
+
+    <div class="input-group mb-1">
       <div class="input-group-prepend">
-        <span class="input-group-text"><strong>Mật khẩu:</strong></span>
+        <span class="input-group-text"><strong>Tài khoản :</strong></span>
       </div>
-      <input type="password" class="form-control" id="pass" name="pass" placeholder="Passord cho việc đăng nhập">
+      <input type="text" class="form-control" id="username" name="username" placeholder="Tài khoản cho việc đăng nhập. VD: nguyenvana">
     </div>
-    <div class="input-group mb-3">
+    <div class="mb-3 message" id="mess-username"></div>
+
+    <div class="input-group mb-1">
       <div class="input-group-prepend">
-        <span class="input-group-text"><strong>Nhập lại mật khẩu:</strong></span>
+        <span class="input-group-text"><strong>Mật khẩu :</strong></span>
+      </div>
+      <input type="password" class="form-control" id="pass" name="pass">
+    </div>
+    <div class="mb-3 message" id="mess-pass"></div>
+
+    <div class="input-group mb-1">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><strong>Nhập lại mật khẩu :</strong></span>
       </div>
       <input type="password" class="form-control" id="password" name="password">
     </div>
+    <div class="mb-3 message" id="mess-password"></div>
     <div class="form-group" style="text-align:center">
-      <button class="btn btn-danger" type="submit" onclick="insertGS()">Đăng ký</button>
+      <button class="btn btn-danger" type="submit" id="btn-dangky-gs">Đăng ký</button>
     </div>
     <!-- END FORM-->
   </div>
@@ -147,12 +154,12 @@
         <!-- Modal body -->
         <div class="modal-body">
           <div class="form-group">
-            <label class="m-0" for="sdt_dn"><h6>Số điện thoại :</h6></label>
+            <label class="m-0" for="sdt_dn"><h6>Tài khoản :</h6></label>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
               </div>
-              <input type="text" class="form-control" id="sdt_dn" name="sdt_dn">
+              <input type="text" class="form-control" id="taikhoan-dn" name="taikhoan-dn">
             </div>
           </div>
           <div class="form-group">
@@ -161,12 +168,12 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
               </div>
-              <input type="password" class="form-control" id="password_dn" name="password_dn" required>
+              <input type="password" class="form-control" id="matkhau-dn" name="matkhau-dn">
             </div>
           </div>
         <!-- Modal footer -->
         <div class="modal-footer pb-0 m-0">
-          <button class="btn-phd" id="dangnhap" name="dangnhap" onclick="login()">Đăng nhập</button>
+          <button class="btn-phd" id="btn-dangnhap" name="btn-dangnhap">Đăng nhập</button>
         </div> 
       </div>
     </div>

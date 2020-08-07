@@ -1,14 +1,5 @@
 <?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 100;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
-
+  require_once('controllers/check_session.php');
   if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 2){
     header("location:index.php");
   }
@@ -63,17 +54,17 @@
     <div class="row">
       <div class="col-1"></div>
       <div class="col-10">
-        <table class="table table-hover table-responsive table-striped mt-2" style="text-align:center">
-          <thead class="thead-dark">
+        <table class="table table-hover table-responsive mt-2" style="text-align:center;">
+          <thead class="thead-dark" style="width:auto">
             <tr>
-              <th style="width:15%"></th>
-              <th>Thứ hai</th>
-              <th>Thứ ba</th>
-              <th>Thứ tư</th>
-              <th>Thứ năm</th>
-              <th>Thứ sáu</th>
-              <th>Thứ bảy</th>
-              <th>Chủ nhật</th>
+              <th style="width:16%"></th>
+              <th style="width:12%">Thứ hai</th>
+              <th style="width:12%">Thứ ba</th>
+              <th style="width:12%">Thứ tư</th>
+              <th style="width:12%">Thứ năm</th>
+              <th style="width:12%">Thứ sáu</th>
+              <th style="width:12%">Thứ bảy</th>
+              <th style="width:12%">Chủ nhật</th>
             </tr>
           </thead>
           <tbody id="content">
@@ -245,10 +236,10 @@
         <div class="modal-body">
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text"><strong>Môn:</strong></span>
+              <span class="input-group-text"><strong>Khóa học:</strong></span>
             </div>
-            <select class="form-control" id="monhoc" name="monhoc" onchange="getCTMH(this)">
-              <option value="">-- Chọn môn --</option>
+            <select class="form-control" id="khoahoc" name="khoahoc" onchange="getCTMH(this)">
+              <option value="">-- Chọn khóa học --</option>
               <option value="Khoa Học Tự Nhiên">Khoa Học Tự Nhiên</option>
               <option value="Lập Trình Căn Bản">Lập Trình Căn Bản</option>
               <option value="Lập Trình Web">Lập Trình Web</option>
@@ -260,15 +251,15 @@
           </div>
           <div class="input-group mb-3">
             <div class="input-group-prepend">
-              <span class="input-group-text"><strong>Môn chi tiết:</strong></span>
+              <span class="input-group-text"><strong>Môn học:</strong></span>
             </div>
-            <select class="form-control" id="chitietmonhoc" name="chitietmonhoc"></select>
+            <select class="form-control" id="monhoc" name="monhoc"></select>
           </div>
           <div class="input-group">
             <div class="input-group-prepend">
               <span class="input-group-text"><strong>Học phí:</strong></span>
             </div>
-            <input type="number" class="form-control" id="hocphi" name="hocphi" onkeypress="validateNumber(event)" placeholder="Học phí dự kiến 1 buổi (2h-3h)">
+            <input type="number" class="form-control only-number" id="hocphi" name="hocphi" placeholder="Học phí dự kiến 1 buổi (2h-3h)">
           </div>
         </div>
         <div class="modal-footer">

@@ -1,17 +1,5 @@
-<?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 900;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
-  if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 1){
-    header("location:../index.php");
-  }
-?>
+<?php require_once('controllers/check_session.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +14,7 @@
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
   <script type="text/javascript">
     function huyduyetreviewgs(temp) {
-      var ID = temp.getAttribute("data-id");
+      var username = temp.getAttribute("data-id");
       var xhttp;
       xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -36,12 +24,12 @@
             else alert('ERROR: Có lỗi trong quá trình xử lý !');
         }
       };
-      xhttp.open("GET", "controllers/huyduyetreviewgs.php?id=" + ID, true);
+      xhttp.open("GET", "controllers/huyduyetreviewgs.php?username=" + username, true);
       xhttp.send();
     }
 
     function duyetreviewgs(temp) {
-      var ID = temp.getAttribute("data-id");
+      var username = temp.getAttribute("data-id");
       var xhttp;
       xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -51,7 +39,7 @@
             else alert('ERROR: Có lỗi trong quá trình xử lý !');
         }
       };
-      xhttp.open("GET", "controllers/duyetreviewgs.php?id=" + ID, true);
+      xhttp.open("GET", "controllers/duyetreviewgs.php?username=" + username, true);
       xhttp.send();
     }
   </script>
@@ -124,11 +112,11 @@
         <div id="main">
           <div class="container">
             <div id="notification"></div>
-            <h2>Quản lý bài viết đánh giá gia sư</h2>
+            <h2>Quản lý bài review</h2>
             <table class="table table-hover table-striped">
               <thead class="thead-dark">
                 <tr>
-                  <th>SĐT (Người đăng)</th>
+                  <th>Người đăng</th>
                   <th>Nội Dung</th>
                   <th>Ngày Đăng</th>
                   <th>Kiểm Duyệt</th>
@@ -172,28 +160,26 @@
                 }
                 while ($row = mysqli_fetch_row($result)) {  
                   echo "<tr>";
-                  echo "<td>" . $row[1] . "</td>";
+                  echo "<td>" . $row[0] . "</td>";
+                  echo '<td style="color:#4e73df"><i>Xem trong chi tiết</i></td>';
                   echo "<td>" . $row[2] . "</td>";
-                  echo "<td>" . $row[3] . "</td>";
                   
-                  if($row[4] == 1)
-                  {
+                  if($row[3] == 1){
                     echo"<td>Đã duyệt</td>";
                     echo '<td><button class="icon icon-huy" data-id="'. $row[0] .'" onclick="huyduyetreviewgs(this)"><i class="fas fa-times-circle"></i></button>';
                   }
-                  else
-                  {
+                  else{
                     echo"<td>Chưa duyệt</td>";
                     echo '<td><button class="icon icon-duyet" data-id="'. $row[0] .'" onclick="duyetreviewgs(this)"><i class="fas fa-check-circle"></i></button>';
                   }
                   
-                  echo '<button class="icon"><a class="icon" href="detailreview_gs.php?id='.$row[0].'"> <i class="fas fa-info-circle "></i></a></button></td>';
+                  echo '<button class="icon"><a class="icon" href="detailreview_gs.php?username='.$row[0].'"> <i class="fas fa-info-circle "></i></a></button></td>';
                   echo "</tr>";
                 }
 
                 //Close connection
-                  $db->close();
-                  ?>
+                $db->close();
+                ?>
               </tbody>
             </table>
 

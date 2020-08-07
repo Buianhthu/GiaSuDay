@@ -1,5 +1,5 @@
 <?php
-      require_once('./models/data_access_helper.php');
+      require_once('models/data_access_helper.php');
       $db = new DataAccessHelper();
 
       // Connect to database
@@ -8,12 +8,8 @@
       $item_page3 = !empty($_GET['per_page3'])?$_GET['per_page3']:3;
       $current_page3 = !empty($_GET['page3'])?$_GET['page3']:1;
       $offset3 = ($current_page3 - 1) * $item_page3;
-      $result = mysqli_query($conn, "SELECT * FROM Review  
-      INNER JOIN ThanhVien ON Review.SDT_TV = ThanhVien.SDT_TV
-      INNER JOIN User ON Review.SDT_TV = User.SDT LIMIT ".$item_page3." OFFSET ".$offset3."");
-      $sum_item3 = mysqli_query($conn, "SELECT * FROM Review  
-      INNER JOIN ThanhVien ON Review.SDT_TV = ThanhVien.SDT_TV
-      INNER JOIN User ON Review.SDT_TV = User.SDT");
+      $result = mysqli_query($conn, "SELECT * FROM Review, HocVien,User WHERE Review.Username = HocVien.Username AND HocVien.username = User.Username LIMIT ".$item_page3." OFFSET ".$offset3."");
+      $sum_item3 = mysqli_query($conn, "SELECT * FROM Review, HocVien, User WHERE Review.Username = HocVien.Username AND HocVien.username = User.Username ");
       $sum_item3 = $sum_item3 -> num_rows;
       $totalpage3 = ceil ($sum_item3/$item_page3);
 ?>
@@ -36,7 +32,7 @@
               if($result->num_rows > 0)
               {
                 foreach ($result as $dt){
-                  //if ($dt['KiemDuyet'] == 1)
+                  if ($dt['KiemDuyet'] == 1)
                   {
                       if($i % 2 != 0)
                         {

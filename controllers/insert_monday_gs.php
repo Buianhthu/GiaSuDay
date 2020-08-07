@@ -11,16 +11,16 @@
 	$db->connect();
 
 	// Biến thao tác
-	$sdt = $monhoc = $chitietmonhoc = $hocphi = "";
+	$username = $khoahoc = $monhoc = $hocphi = "";
 	$insertOK = true;
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
-		if(empty($_GET["sdt"]) || empty($_GET["monhoc"]) || empty($_GET["chitietmonhoc"]) || empty($_GET["hocphi"]))
+		if(empty($_GET["username"]) || empty($_GET["khoahoc"]) || empty($_GET["monhoc"]) || empty($_GET["hocphi"]))
 			$insertOK = false;
 		else{
-			$sdt = test_input($_GET["sdt"]);
+			$username = test_input($_GET["username"]);
+			$khoahoc = test_input($_GET["khoahoc"]);
 			$monhoc = test_input($_GET["monhoc"]);
-			$chitietmonhoc = test_input($_GET["chitietmonhoc"]);
 			$hocphi = test_input($_GET["hocphi"]);
 		}
 
@@ -28,20 +28,24 @@
 			$insertOK = false;
 
 		if($insertOK == true){
-			$sql_check = "SELECT * FROM monday WHERE SDT_GS ='$sdt' AND TenMonHoc ='$monhoc' AND chitietmonhoc ='$chitietmonhoc'";
+			$sql_check = "SELECT * FROM monday WHERE Username ='$username' AND KhoaHoc ='$khoahoc' AND MonHoc ='$monhoc'";
 			$result = $db->executeQuery($sql_check);
 
-			if(mysqli_num_rows($result)> 0){
-				echo "-1";
-			}
+			if(mysqli_num_rows($result)> 0) echo 0;
 			else{
-				$sql = "INSERT INTO monday(SDT_GS, TenMonHoc, ChiTietMonHoc, HocPhi) VALUES('$sdt', '$monhoc', '$chitietmonhoc', '$hocphi')";
-				if($db->executeNonQuery($sql)) echo "1";
-				else echo "0";
+				$sql = "INSERT INTO monday(Username, KhoaHoc, MonHoc, HocPhi) VALUES('$username', '$khoahoc', '$monhoc', '$hocphi')";
+				if($db->executeNonQuery($sql)) echo 1;
+				else echo -2;
 			}
 		}
-		else echo '0';
+		else echo -1;
 	}
+	else echo -2;
+
+	// -2 : Lỗi xử lý
+	// -1 : Lỗi data không hợp lệ
+	// 0 : Lỗi data đã tồn tại
+	// 1 : Không có lỗi
 
 	$db->close();
 ?>

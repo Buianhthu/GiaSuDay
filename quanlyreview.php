@@ -1,15 +1,7 @@
 <?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 100;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
+  require_once('controllers/check_session.php');
 
-  if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 3){
+  if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || ($_SESSION['level'] != 3 && $_SESSION['level'] != 2)){
     header("location:index.php");
   }
 ?>
@@ -18,7 +10,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Quản lý dạy học</title>
+  <title>Review của tôi</title>
   <!-- Icon trang web -->
   <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
   <!-- BootStrap -->
@@ -62,19 +54,32 @@
     <h4 class="mt-3" style="text-align:center">Review của bạn</h4>
     <div class="row">
       <div class="col">
-        <table class="table table-hover table-responsive table-striped mt-2" style="text-align:center">
-          <thead class="thead-dark" >
-            <tr>
-              <th width="5%">Id</th>
-              <th width="75%">Nội dung</th>
-              <th width="10%">Ngày đăng</th>
-              <th width="10%">Kiểm duyệt</th>
-            </tr>
-          </thead>
-          <tbody id="content">
-            <?php require_once('views/display_review_tv.php') ?>
-          </tbody>
-        </table>
+        <?php require_once('views/display_review.php') ?>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="updateReview">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Chỉnh sửa nội dung</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-inline">
+            <textarea rows="5" cols="150" id="noidung" maxlength="300" placeholder="Nội dung mới..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <?php
+            echo '<button class="btn-phd btn-phd-pC" onclick="updateReview(';
+            echo "'" . $_SESSION['username'] . "'"; 
+            echo ')">Cập nhật</button>';
+          ?>
+        </div>
       </div>
     </div>
   </div>

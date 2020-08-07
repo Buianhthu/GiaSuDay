@@ -1,14 +1,4 @@
-<?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 10000;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
-?>
+<?php require_once('controllers/check_session.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +14,9 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+  <!-- Jquery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   <!-- Core theme CSS (includes Bootstrap)-->
   <link href="css/styles.css" rel="stylesheet" />
   <link href="css/override.css" rel="stylesheet" />
@@ -40,8 +33,8 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav text-uppercase ml-auto">
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">GIA SƯ</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#services">TÌM GIA SƯ</a></li>
-          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">ĐÁNH GIÁ</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#baidang">TÌM GIA SƯ</a></li>
+          <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#review">ĐÁNH GIÁ</a></li>
           <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">LIÊN HỆ</a></li>
         </ul>
         <?php require_once('views/display_login.php'); ?>
@@ -52,15 +45,41 @@
   <!-- Masthead-->
   <header class="masthead">
     <div class="container">
-      <div class="masthead-heading text-uppercase tieude">giasuday</div>
-      <div class="masthead-subheading tieude-cm">Website tìm gia sư IT đầu tiên của Việt Nam</div>
-      <!-- <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Tell Me More</a> -->
+      <div class="masthead-heading text-uppercase tieude">giasuday</div>   
+
+      <!-- Tìm kiếm --> 
+      <div class="container">
+        <!-- FORM INSERT -->
+        <div id='TimGS'>
+         <!--  <form action="" method="GET"> -->
+            <div class="input-group mb-3" > 
+              <div class="input-group-prepend" style="width:80%; margin: 0 auto">
+                <span class="input-group-text" style="background-color: #2E9AFE; color:white; width:40%; height: 3rem; text-align: center"><strong>KHOÁ HỌC :</strong></span>
+                <select class="form-control" id="khoahoc" name="monhoc" onchange="getCTMH(this)" style="height: 3rem">
+                  <option value="">-- Chọn khoá học --</option>
+                  <option value="Khoa Học Tự Nhiên">Khoa Học Tự Nhiên</option>
+                  <option value="Lập Trình Căn Bản">Lập Trình Căn Bản</option>
+                  <option value="Lập Trình Web">Lập Trình Web</option>
+                  <option value="Lập Trình Mobile">Lập Trình Mobile</option>
+                  <option value="Lập Trình Game">Lập Trình Game</option>
+                  <option value="Lập Trình Hệ Thống">Lập Trình Hệ Thống</option>
+                  <option value="Tin Học Văn Phòng">Tin Học Văn Phòng</option>
+                </select>
+                <span class="input-group-text" style="margin-left:20px; background-color: #2E9AFE; color:white; width:40%; height: 3rem; text-align: center"><strong>MÔN HỌC :</strong></span>
+                <select class="form-control" id="monhoc" name="chitietmonhoc" style="height: 3rem"></select>
+              </div>
+            </div>
+            <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" name="timkiem" href="#portfolio" onclick ="Search()" style="background-color: #fed136; color:white">Tìm Kiếm</a>
+            <!-- <a name="timkiem" href="#portfolio" onclick ="Search()" class="btn" style="margin-top: 30px; width:10%; height: 50px; background-color: " >Tìm Kiếm</a> -->
+          <!-- </form> -->
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- Danh sách gia sư -->
-  <?php require_once ("views/giasu.php"); ?>
-
+  <!-- Tìm kiếm -->
+   <?php require_once ("timkiemgs.php"); ?>
+  
   <!-- Danh sách bài đăng tìm gia sư -->
   <?php require_once ("views/baidang.php"); ?>
 
@@ -109,12 +128,12 @@
         <!-- Modal body -->
         <div class="modal-body">
           <div class="form-group">
-            <label class="m-0" for="sdt_dn"><h6>Số điện thoại :</h6></label>
+            <label class="m-0" for="sdt_dn"><h6>Tài khoản :</h6></label>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-user-circle"></i></span>
               </div>
-              <input type="text" class="form-control" id="sdt_dn" name="sdt_dn">
+              <input type="text" class="form-control" id="taikhoan-dn" name="taikhoan-dn">
             </div>
           </div>
           <div class="form-group">
@@ -123,12 +142,12 @@
               <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
               </div>
-              <input type="password" class="form-control" id="password_dn" name="password_dn" required>
+              <input type="password" class="form-control" id="matkhau-dn" name="matkhau-dn">
             </div>
           </div>
         <!-- Modal footer -->
         <div class="modal-footer pb-0 m-0">
-          <button class="btn-phd" id="dangnhap" name="dangnhap" onclick="login()">Đăng nhập</button>
+          <button class="btn-phd" id="btn-dangnhap" name="btn-dangnhap">Đăng nhập</button>
         </div> 
       </div>
     </div>

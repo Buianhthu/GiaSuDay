@@ -55,7 +55,7 @@
           require_once('models/data_access_helper.php');
           $db = new DataAccessHelper();
           $db->connect();
-          $sql = "UPDATE chungchi SET ImageLink = '". $newname ."' WHERE SDT_GS = '". $_SESSION['username'] . "';";
+          $sql = "UPDATE chungchi SET ImageLink = '". $newname ."' WHERE Username = '". $_SESSION['username'] . "';";
           $db->executeNonQuery($sql);
           $db->close();
         }

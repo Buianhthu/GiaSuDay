@@ -1,17 +1,10 @@
 <?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 100;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
+  require_once('controllers/check_session.php');
 
   if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 2){
     header("location:index.php");
   }
+
   require_once('controllers/upload_avatar.php');
   require_once('controllers/upload_chungchi_gs.php');
 ?>
@@ -88,23 +81,26 @@
   </div>
 
   <!-- MODAL LIST -->
-  <div class="modal fade" id="updateMoTa">
+  <div class="modal fade" id="updateSDT">
     <div class="modal-dialog">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Giới thiệu bản thân</h4>
+          <h4 class="modal-title">Số điện thoại</h4>
           <button type="button" class="close" data-dismiss="modal">×</button>
         </div>
         <!-- Modal body -->
         <div class="modal-body">
-          <div class="form-inline">
-            <textarea rows="5" cols="150" id="mota" name="mota" maxlength="299" placeholder="Mô tả về kinh nghiệm, ưu điểm của bản thân. Đây là nội dung để thu hút học viên đăng ký."></textarea>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+            </div>
+            <input type="text" class="form-control only-number" id="sdt" name="sdt">
           </div>
         </div>
         <div class="modal-footer">
           <?php
-            echo '<button class="btn-phd btn-phd-pC" onclick="updateMoTa(';
+            echo '<button class="btn-phd btn-phd-pC" onclick="updateSDT(';
             echo "'" . $_SESSION['username'] . "'"; 
             echo ')">Cập nhật</button>';
           ?>
@@ -161,6 +157,31 @@
         <div class="modal-footer">
           <?php
             echo '<button class="btn-phd btn-phd-pC" onclick="updateFB(';
+            echo "'" . $_SESSION['username'] . "'"; 
+            echo ')">Cập nhật</button>';
+          ?>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="updateMoTa">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Giới thiệu bản thân</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div class="form-inline">
+            <textarea rows="5" cols="150" id="mota" name="mota" maxlength="299" placeholder="Mô tả về kinh nghiệm, ưu điểm của bản thân. Đây là nội dung để thu hút học viên đăng ký."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <?php
+            echo '<button class="btn-phd btn-phd-pC" onclick="updateMoTa(';
             echo "'" . $_SESSION['username'] . "'"; 
             echo ')">Cập nhật</button>';
           ?>
@@ -241,7 +262,7 @@
             </div>
             <select class="form-control" id="hocvi" name="hocvi">
               <option value="">-- Chọn học vị --</option>
-              <option value="Người lành nghề">Người lành nghề</option>
+              <option value="Người Lành Nghề">Người Lành Nghề</option>
               <option value="Trung Cấp">Trung Cấp</option>
               <option value="Cao Đẳng">Cao Đẳng</option>
               <option value="Đại Học">Đại Học</option>

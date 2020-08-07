@@ -11,14 +11,14 @@
 	$db->connect();
 
 	// Biến thao tác
-	$sdt = $linhvuc = $chuyennganh = $hocvi = $noilamviec = "";
+	$username = $linhvuc = $chuyennganh = $hocvi = $noilamviec = "";
 	$updateOK = true;
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
-		if(empty($_GET["sdt"]) || empty($_GET["linhvuc"]) || empty($_GET["chuyennganh"]) || empty($_GET["hocvi"]) || empty($_GET["noilamviec"]))
+		if(empty($_GET["username"]))
 			$updateOK = false;
 		else{
-			$sdt = test_input($_GET["sdt"]);
+			$username = test_input($_GET["username"]);
 			$linhvuc = test_input($_GET["linhvuc"]);
 			$chuyennganh = test_input($_GET["chuyennganh"]);
 			$hocvi = test_input($_GET["hocvi"]);
@@ -26,13 +26,17 @@
 		}
 
 		if($updateOK == true){
-			$sql = "UPDATE giasu SET LinhVuc = '$linhvuc', ChuyenNganh = '$chuyennganh', HocVi = '$hocvi', NoiLamViec = '$noilamviec' WHERE SDT_GS = '$sdt';";
+			$sql = "UPDATE giasu SET LinhVuc = '$linhvuc', ChuyenNganh = '$chuyennganh', HocVi = '$hocvi', NoiLamViec = '$noilamviec' WHERE Username = '$username';";
 
-			if($db->executeNonQuery($sql)) echo "1";
-			else echo "0";
+			if($db->executeNonQuery($sql)) echo 1;
+			else echo -2;
 		}
-		else echo "0";
+		else echo -2;
 	}
+	else echo -2;
+
+	// -2 : Lỗi xử lý
+	// 1 : Không có lỗi
 
 	$db->close();
 ?>

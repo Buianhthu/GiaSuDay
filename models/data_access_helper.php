@@ -7,14 +7,14 @@ class DataAccessHelper {
 		$servername = "localhost";
 		$username = "root";
 		$password = "";
-		$dbname = "giasuday";
+		$dbname = "giasuday2";
 
 		// Create connection
 		$GLOBALS['conn'] = new mysqli($servername, $username, $password, $dbname);
 
 		// Check connection
 		if ($GLOBALS['conn']->connect_error) {
-			die("Connection failed: " . $conn->connect_error);
+			die("Connection failed: " . $GLOBALS['conn']->connect_error);
 		}
 	}
 

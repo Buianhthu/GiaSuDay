@@ -1,6 +1,6 @@
 <?php
 	if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || $_SESSION['level'] != 2){
-    	header("location:thongtin_gs.php");
+    	header("location:index.php");
   	}
 
 	require_once('models/data_access_helper.php');
@@ -11,10 +11,10 @@
 	// Connect to database
 	$db->connect();
 
-	$sdt = $_SESSION['username'];
+	$username = $_SESSION['username'];
 
 	// Lấy dữ liệu
-	$sql = "SELECT * FROM thoigianday WHERE SDT_GS = '" . $sdt . "'";
+	$sql = "SELECT * FROM thoigianday WHERE Username = '$username'";
 	$result = $db->executeQuery($sql);
 	
 	if($result){

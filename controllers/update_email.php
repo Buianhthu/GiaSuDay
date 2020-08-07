@@ -11,36 +11,40 @@
 	$db->connect();
 
 	// Biến thao tác
-	$sdt = $email = "";
+	$username = $email = "";
 	$updateOK = true;
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET") {
-		if(empty($_GET["sdt"]) || empty($_GET["email"]))
+		if(empty($_GET["username"]) || empty($_GET["email"]))
 			$updateOK = false;
 		else{
-			$sdt = test_input($_GET["sdt"]);
+			$username = test_input($_GET["username"]);
 			$email = test_input($_GET["email"]);
 		}
 
 		if( !filter_var($email, FILTER_VALIDATE_EMAIL) )
 			$updateOK = false;
 
-		if($updateOK == true){
+		if($updateOK){
 			$sql = "SELECT * FROM user WHERE Email = '$email'";
 			$result = $db->executeQuery($sql);
 
-			if(mysqli_num_rows($result) > 0){
-				echo "-1";
-			}
+			if(mysqli_num_rows($result) > 0) echo 0;
 			else{
-				$sql = "UPDATE user SET Email = '$email' WHERE SDT = '$sdt';";
+				$sql = "UPDATE user SET Email = '$email' WHERE Username = '$username';";
 
-				if($db->executeNonQuery($sql)) echo "1";
-				else echo "0";
+				if($db->executeNonQuery($sql)) echo 1;
+				else echo -2;
 			}
 		}
-		else echo "0";
+		else echo -1;
 	}
+	else echo -2;
+
+	// -2 : Lỗi xử lý
+	// -1 : Lỗi Email không hợp lệ
+	// 0 : Lỗi Email đã tồn tại
+	// 1 : Không có lỗi
 
 	$db->close();
 ?>

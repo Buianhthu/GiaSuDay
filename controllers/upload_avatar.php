@@ -17,7 +17,6 @@
       // Kiểm tra file có phải file ảnh không
       $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
       if($check !== false) {
-        echo "1";
         // echo "File is an image - " . $check["mime"] . ".";
         $uploadOk = 1;
       } 
@@ -55,10 +54,10 @@
 
           // Cập nhật lại database
           $_SESSION['avatar'] = $newname;
-          require_once('models/data_access_helper.php');
+          require_once('models/data_access_helper.php'); 
           $db = new DataAccessHelper();
           $db->connect();
-          $sql = "UPDATE user SET Avatar = '". $_SESSION['avatar'] ."' WHERE SDT = '". $_SESSION['username'] . "';";
+          $sql = "UPDATE user SET Avatar = '". $_SESSION['avatar'] ."' WHERE Username = '". $_SESSION['username'] . "';";
           $check = $db->executeNonQuery($sql);
           $db->close();
         } 

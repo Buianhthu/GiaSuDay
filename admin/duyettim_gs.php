@@ -1,17 +1,5 @@
-<?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 900;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
-  if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 1){
-    header("location:../index.php");
-  }
-?>
+<?php require_once('controllers/check_session.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -132,12 +120,12 @@
             <table class="table table-hover table-responsive table-striped">
               <thead class="thead-dark">
                 <tr>
-                  <th>SĐT (Người đăng)</th>
-                  <th>Tên Môn Học</th>
+                  <th>Người đăng</th>
+                  <th style="width:26%">Môn Học</th>
                   <th>Nội Dung</th>
-                  <th>Thời Gian Học</th>
-                  <th>Học Phí</th>
                   <th>Ngày Đăng</th>
+                  <th>Học Phí</th>
+                  <th>Thời Gian Học</th>
                   <th>Kiểm Duyệt</th>
                   <th>Actions</th>
                 </tr>
@@ -156,7 +144,7 @@
                 $limit = 8;
                 $page = isset($_GET['page']) ? $_GET['page'] : 1;
                 $start = ($page - 1) * $limit;
-                $result = $db->executeQuery("SELECT * FROM timgiasu LIMIT $start, $limit");
+                $result = $db->executeQuery("SELECT * FROM baidang LIMIT $start, $limit");
 
                 if (!$result) {
                   die("ERROR: " . $db->connect_error);
@@ -164,7 +152,7 @@
                 }
 
                 // Count page numbers
-                $result1 = $db->executeQuery("SELECT count(*) AS id FROM timgiasu");
+                $result1 = $db->executeQuery("SELECT count(*) AS id FROM baidang");
                 $count = $result1->fetch_array(MYSQLI_ASSOC);
                 $total = $count['id'];
                 $numPages = ceil($total / $limit);
@@ -182,28 +170,26 @@
                   echo "<tr>";
                   echo "<td>" . $row[1] . "</td>";
                   echo "<td>" . $row[2] . "</td>";
-                  echo "<td>" . $row[3] . "</td>";
+                  echo '<td style="color:#4e73df"><i>Xem trong chi tiết</i></td>';
                   echo "<td>" . $row[4] . "</td>";
                   echo "<td>" . $row[5] . "</td>";
-                  echo "<td>" . $row[6] . "</td>";
+                  echo '<td style="color:#4e73df"><i>Xem trong chi tiết</i></td>';
         
-                  if($row[8]== 1)
-                  {
+                  if($row[7] == 1){
                     echo"<td>Đã duyệt</td>";
                     echo '<td><button class="icon icon-huy" data-id="' . $row[0] . '" onclick="huyduyettimgs(this)"><i class="fas fa-times-circle"></i></button>';
                   }
-                  else
-                  {
+                  else{
                     echo"<td>Chưa duyệt</td>";
                     echo '<td><button class="icon icon-duyet" data-id="' . $row[0] . '" onclick="duyettimgs(this)"><i class="fas fa-check-circle"></i></button>';
                   }
-                    echo '<button class="icon"><a class="icon" href="detailtim_gs.php?id='.$row[0].'"> <i class="fas fa-info-circle"></i></a></button></td>';
-                    echo "</tr>";
-                  }
+                  echo '<button class="icon"><a class="icon" href="detailtim_gs.php?id='.$row[0].'"> <i class="fas fa-info-circle"></i></a></button></td>';
+                  echo "</tr>";
+                }
 
-                  //Close connection
-                  $db->close();
-                  ?>
+                //Close connection
+                $db->close();
+                ?>
               </tbody>
             </table>
 

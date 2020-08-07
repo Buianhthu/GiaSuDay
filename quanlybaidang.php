@@ -1,13 +1,5 @@
 <?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 100;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
+  require_once('controllers/check_session.php');
 
   if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 3){
     header("location:index.php");
@@ -18,7 +10,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Quản lý dạy học</title>
+  <title>Quản lý bài đăng</title>
   <!-- Icon trang web -->
   <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
   <!-- BootStrap -->
@@ -33,7 +25,31 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Core theme CSS (includes Bootstrap)-->
   <link href="css/styles.css" rel="stylesheet"/>
-  <link href="css/override.css" rel="stylesheet" />
+  <link href="css/override.css" rel="stylesheet"/>
+  <style type="text/css">
+    button.none {
+      background: none;
+      color: #337ab7;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      outline: inherit;
+    }
+
+    button.none:hover {
+      color: #000000;
+    }
+    
+    a.icon {
+      text-decoration: none;
+      color: #337ab7;
+    }
+
+    a.icon:hover {
+      color: #000000;
+    }
+  </style>
 </head>
 <body id="page-top">
   <!-- VIEWS -->
@@ -62,21 +78,20 @@
     <h4 class="mt-3" style="text-align:center">Bài đăng của bạn</h4>
     <div class="row">
       <div class="col">
-        <table class="table table-hover table-responsive table-striped mt-2" style="text-align:center">
+        <table class="table table-hover table-responsive mt-2" style="text-align:center">
           <thead class="thead-dark" >
             <tr>
-              <th width="5%">Id</th>
-              <th width="30%">Tên Môn Học</th>
+              <th width="20%">Môn học</th>
               <th width="10%">Nội dung</th>
-              <th width="25%">Thời gian học</th>
-              <th width="10%">Học phí</th>
-              <th width="10%">Ngày đăng</th>
-              <th width="5%">Tình trạng</th>
-              <th width="5%">Kiểm duyệt</th>
+              <th width="15%">Học phí</th>
+              <th width="15%">Ngày đăng</th>
+              <th width="20%">Tình trạng</th>
+              <th width="10%">Kiểm duyệt</th>
+              <th width="10%"></th>
             </tr>
           </thead>
           <tbody id="content">
-            <?php require_once('views/display_baidangtimgiasu_tv.php') ?>
+            <?php require_once('views/display_baidang_hv.php') ?>
           </tbody>
         </table>
       </div>
@@ -84,7 +99,7 @@
   </div>
 
   <!-- MODAL LIST -->
-    <?php require_once('views/display_modal_timgiasu.php') ?>
+    <?php require_once('views/display_modal_baidang.php') ?>
   <!-- END MODAL LIST -->
 
   <!-- My JavaScript -->

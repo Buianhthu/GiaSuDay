@@ -1,17 +1,5 @@
-<?php
-  session_start();
-  $time = $_SERVER['REQUEST_TIME'];
-  $timeout_duration = 900;
-  if ( isset($_SESSION['LAST_ACTIVITY']) && ($time - $_SESSION['LAST_ACTIVITY']) > $timeout_duration ) {
-    session_unset();
-    session_destroy();
-    session_start();
-  }
-  $_SESSION['LAST_ACTIVITY'] = $time;
-  if(!isset($_SESSION['username']) || !isset($_SESSION['password']) || !isset($_SESSION['level']) || !isset($_SESSION['avatar']) || $_SESSION['level'] != 1){
-    header("location:../index.php");
-  }
-?>
+<?php require_once('controllers/check_session.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +21,7 @@
     
   <script type="text/javascript">
     function duyetdkgs(temp) {
-      var SDT_GS = temp.getAttribute("data-id");
+      var username = temp.getAttribute("data-id");
       var xhttp;
       xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -43,12 +31,12 @@
           else alert('ERROR: Có lỗi trong quá trình xử lý !');
         }
       };
-      xhttp.open("GET", "controllers/duyetdkgs.php?id=" + SDT_GS, true);
+      xhttp.open("GET", "controllers/duyetdkgs.php?username=" + username, true);
       xhttp.send();
     }
 
     function huyduyetdkgs(temp) {
-      var SDT_GS = temp.getAttribute("data-id");
+      var username = temp.getAttribute("data-id");
       var xhttp;
       xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -58,7 +46,7 @@
           else alert('ERROR: Có lỗi trong quá trình xử lý !');
         }
       };
-      xhttp.open("GET", "controllers/huyduyetdkgs.php?id=" + SDT_GS, true);
+      xhttp.open("GET", "controllers/huyduyetdkgs.php?username=" + username, true);
       xhttp.send();
     }
   </script>
@@ -136,8 +124,8 @@
             <div class="row mb-5">
               <div class="col-12 m-auto">
                 <?php
-                $sdt = $_GET['id'];
-                $sql = "SELECT ImageLink FROM chungchi where SDT_GS = '$sdt'";
+                $username = $_GET['username'];
+                $sql = "SELECT ImageLink FROM chungchi where Username = '$username'";
                 $result = $db->executeQuery($sql);
                 $row = $result->fetch_array(MYSQLI_ASSOC);
                 $ccLink = "../" . $row['ImageLink'];
@@ -151,15 +139,18 @@
 
             <h2 class="mb-3">Thông tin chi tiết</h2>
             <?php
-              $SDT_GS = $_GET['id'];
-              $sql = "select * from giasu where SDT_GS = '$SDT_GS'";
+              $username = $_GET['username'];
+              $sql = "SELECT * FROM user, giasu WHERE user.Username = giasu.Username AND user.Username = '$username'";
               $result = $db->executeQuery($sql);
               while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
                 echo '<ul class="list-group list-group-flush mt-4">';
-                echo '<li class="list-group-item"><strong>Số Điện Thoại : </strong>' . $row['SDT_GS'] . '</li>';
+                echo '<li class="list-group-item"><strong>Username : </strong>' . $row['Username'] . '</li>';
                 echo '<li class="list-group-item"><strong>Họ Tên : </strong>' . $row['HoTen'] . '</li>';
                 echo '<li class="list-group-item"><strong>Ngày Sinh : </strong>' . $row['NgaySinh'] . '</li>';
                 echo '<li class="list-group-item"><strong>Giới Tính : </strong>' . $row['GioiTinh'] . '</li>';
+                echo '<li class="list-group-item"><strong>Số điện thoại : </strong>' . $row['SDT'] . '</li>';
+                echo '<li class="list-group-item"><strong>Email : </strong>' . $row['Email'] . '</li>';
+                echo '<li class="list-group-item"><strong>Facebook : </strong>' . $row['Facebook'] . '</li>';
                 echo '<li class="list-group-item"><strong>Chứng Minh Nhân Dân : </strong>' . $row['CMND'] . '</li>';
                 echo '<li class="list-group-item"><strong>Lĩnh Vực : </strong>' . $row['LinhVuc'] . '</li>';
                 echo '<li class="list-group-item"><strong>Chuyên Ngành : </strong>' . $row['ChuyenNganh'] . '</li>';
@@ -169,10 +160,10 @@
 
                 if ($row['KiemDuyet'] == '1') {
                   echo '<li class="list-group-item"><strong>Kiểm Duyệt : </strong>Đã duyệt</li>';
-                  echo '<button class="btn btn-danger mt-5" data-id="'. $row['SDT_GS'] .'" onclick="huyduyetdkgs(this)">Hủy duyệt</button>';
+                  echo '<button class="btn btn-danger mt-5" data-id="'. $row['Username'] .'" onclick="huyduyetdkgs(this)">Hủy duyệt</button>';
                 } else {
                   echo '<li class="list-group-item"><strong>Kiểm Duyệt : </strong>Chưa duyệt</li>';
-                  echo '<button class="btn btn-primary mt-5" data-id="' . $row['SDT_GS'] . '" onclick="duyetdkgs(this)">Duyệt</button>';
+                  echo '<button class="btn btn-primary mt-5" data-id="' . $row['Username'] . '" onclick="duyetdkgs(this)">Duyệt</button>';
                 }
 
                 echo '</ul>';

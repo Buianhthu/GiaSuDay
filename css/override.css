@@ -1,7 +1,7 @@
 /* RESET */
 #mainNav{
-	background-color: #212529 !important;
-	height: 70px !important;
+  background-color: #212529 !important;
+  height: 70px !important;
 }
 
 #navbarResponsive {
@@ -270,10 +270,25 @@ button.close:focus, button.close:active{
   box-shadow: 0 0 1px 1px rgba(0,123,255,1); 
 }
 
+button.none {
+  background: none;
+  color: #337ab7;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+button.none:hover {
+  color: #000000;
+}
+
 /* --- */
 
 div#userInfo {
   background-size: cover !important;
+  background-position: center;
   background-repeat: no-repeat;
   border: .1rem solid #868e96;
   border-radius: 100% !important;
@@ -315,12 +330,6 @@ div#userInfo .button-dx::selection { /* Button dang xuat */
 }
 
 .cc {
-  /*background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin: auto;
-  width: 100%;
-  height: 300px;*/
   text-align: center;
   justify-content: center;
 }
@@ -331,4 +340,28 @@ div#userInfo .button-dx::selection { /* Button dang xuat */
   margin-top: 100px !important;
   color: #007bff !important;
   text-decoration: none !important;
+}
+
+.message {
+  color: red;
+  text-align: center;
+}
+
+#userInfo .dropdown-content-user a{
+  position: relative;
+}
+
+.news {
+  display: inline-block;
+  position: absolute;
+  left: 15px;
+  border-radius: 100%;
+  border: 1px solid red;
+  width: 12px;
+  height: 12px;
+  text-align: center;
+  padding: 1px 1px 0.5px 1px;
+  color: #fed136;
+  background-color: red;
+  font-size: 6px;
 }
